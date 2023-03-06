@@ -1,0 +1,55 @@
+package Test;
+
+public class Test51_LambdaDemo {
+
+	public static void main(String[] args) {
+		
+//		IEat1 ieat = new IEatImpl();
+//		ieat.eat("eat apple");
+//		
+//		IEat1 ieat2 = new IEat1() {
+//			public void eat() {
+//				System.out.println("eat banana");
+//			}
+//		};
+//		ieat2.eat();
+		
+		//lambda表达式
+		//好处：代码简洁、不会单独生成class文件
+		//IEat1 ieat3 = ()->{System.out.println("eat apple banana");};
+		
+		//没有参数时
+//		IEat1 ieat3 = ()->System.out.println("eat apple banana");
+//		ieat3.eat();
+		
+		//带参数时,参数的类型可以省略，代码块中有多行代码块/class类可以省略
+//		IEat1 ieat4 = (thing,name) -> {
+//			System.out.println("eat.."+thing+"..."+name);
+//			System.out.println(name);
+//		};
+//		ieat4.eat("apple","yang");
+		
+		//带返回值的方法
+		IEat1 ieat5 = (thing,name)->{
+			System.out.println(name+"eat"+thing);
+			return 10;
+		};
+		
+		//带返回值的方法中只有一句实现代码
+//		IEat1 ieat6 = (String thing,String name)->thing == null?1:0;
+		
+		//参数中使用final关键字
+		//IEat1 ieat7 = (final String thing,final String name)->thing == null?1:0;
+	}
+
+}
+
+//只有一个抽象方法的接口
+interface IEat1{
+	public int eat(final String thing,final String name);
+}
+//class IEatImpl implements IEat1{
+//	public void eat(String thing) {
+//		System.out.println("eat.."+thing);
+//	}
+//}
