@@ -1,0 +1,48 @@
+package Test;
+
+import java.util.Comparator;
+
+public class Test45_DogComparator implements Comparator<Test45_Dog>{
+
+	@Override
+	public int compare(Test45_Dog o1, Test45_Dog o2) {
+		return o1.getAge()-o2.getAge();
+	}
+
+}
+
+
+
+package Test;
+
+public class Test45_Dog{
+	private String name;
+	private int age;
+	
+	public Test45_Dog() {
+		super();
+	}
+	public Test45_Dog(String name, int age) {
+		super();
+		this.name = name;
+		this.age = age;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	@Override
+	public String toString() {
+		return "Test45_Dog [name=" + name + ", age=" + age + "]";
+	}
+	
+}
+
