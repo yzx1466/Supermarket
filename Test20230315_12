@@ -1,0 +1,15 @@
+import java.util.Scanner;
+public class Test12{
+	public static void main(String[] args){
+		Scanner input = new Scanner(System.in);
+		System.out.println("请输入一个成绩：");
+		int score = input.nextInt();
+		boolean bool = score>=60?true:false;
+		System.out.println(bool);
+		
+		//int a = 1;
+		//int b = 2;
+		//a = ++a +(b--)+(a-b)+b;
+		//System.out.println(a);
+	}
+}

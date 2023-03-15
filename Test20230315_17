@@ -1,0 +1,27 @@
+import java.util.Scanner;
+public class Test17{
+	public static void main(String[] args){
+		Scanner input = new Scanner(System.in);
+		System.out.println("今天天气如何(1好，2霾)：");
+		int weather = input.nextInt();
+		if(weather==1){
+			System.out.println("天气好，我逛街还是逛公园(1逛街，2逛公园)");
+			int flag = input.nextInt();
+			if(flag==1){
+				System.out.println("陪女朋友逛街");
+			}else if(flag==2){
+				System.out.println("陪女朋友逛公园");
+			}
+		}else if(weather==2){
+			System.out.println("今天天气不好，在家看电影还是玩游戏(1看电影，2玩游戏)");
+			int flag = input.nextInt();
+			if(flag==1){
+				System.out.println("陪女朋友看电影");
+			}else if(flag==2){
+			}else if(flag==2){
+			}else if(flag==2){
+				System.out.println("和女朋友打游戏");	
+			}
+		}
+	}
+}	

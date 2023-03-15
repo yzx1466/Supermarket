@@ -1,0 +1,28 @@
+import java.util.Scanner;
+public class Test11{
+	public static void main(String[] args){
+Scanner input = new Scanner(System.in);
+  System.out.println("请输入第一个数:");
+  int a = input.nextInt();
+  System.out.println("请输入第二个数：");
+  int b = input.nextInt();
+  //通过第三个变量来交换？
+  //int c = a;
+  //a = b;
+  //b = c;
+  //System.out.println("a="+a+"b="+b);
+  //不通过第三个变量如何交换两个数？
+ // a = a+b-(b=a);
+  //System.out.println("a="+a+"b="+b);
+  //通过+-计算
+  //a=a+b;
+  //b=a-b;
+  //a=a-b; 
+  //System.out.println("a="+a+"b="+b); 
+  //通过异或，两个数交换位置最快的方法
+  a = a^b;
+  b = a^b;
+  a = a^b;
+  System.out.println("a="+a+"b="+b); 
+	}
+}	

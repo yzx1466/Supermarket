@@ -1,0 +1,42 @@
+import java.util.Scanner;
+public class Test19{
+	public static void main(String[] args){
+		Scanner input = new Scanner(System.in);
+		System.out.println("今天星期几");
+		int day = input.nextInt();
+		switch(day){
+			case 1:
+				System.out.println("今天星期一");
+					System.out.println("今天星期一比较堵，请选着出行方式（1飞机，2时光机）");
+				int method = input.nextInt();
+				if(method==1){
+					System.out.println("飞机");
+				}else{
+					System.out.println("时光机");
+				}
+				break;
+			case 2:
+				System.out.println("今天星期二");
+				break;
+			case 3:
+				System.out.println("今天星期三");
+				break;
+			case 4:
+				System.out.println("今天星期四");
+				break;
+			case 5:
+				System.out.println("今天星期五");
+				break;
+			case 6:
+				System.out.println("今天星期六");
+				break;
+			case 7:
+				System.out.println("今天星期七");
+				break;
+			default :
+				System.out.println("一周就7天");
+				break;
+		}
+		
+	}
+}

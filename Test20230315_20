@@ -1,0 +1,50 @@
+import java.util.Scanner;
+public class Test20{
+	public static void main(String[] args){
+		Scanner input = new Scanner(System.in);
+		System.out.println("输入一个月数");
+		int mouth = input.nextInt();
+		switch(mouth){
+			case 1:
+			System.out.println("一月：31天");
+			break;
+			case 2:
+			System.out.println("二月：28天");
+			break;
+			case 3:
+			System.out.println("三月：31天");
+			break;
+			case 4:
+			System.out.println("四月：30天");
+			break;
+			case 5:
+			System.out.println("五月：31天");
+			break;
+			case 6:
+			System.out.println("六月：30天");
+			break;
+			case 7:
+			System.out.println("七月：31天");
+			break;
+			case 8:
+			System.out.println("八月：31天");
+			break;
+			case 9:
+			System.out.println("九月：30天");
+			break;
+			case 10:
+			System.out.println("十月：31天");
+			break;
+			case 11:
+			System.out.println("十一月：30天");
+			break;
+			case 12:
+			System.out.println("十二月：31天");
+			break;
+			default:
+			System.out.println("最多十二个月");
+			break;
+		 }
+		}
+	}
+
