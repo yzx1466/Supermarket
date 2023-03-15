@@ -1,0 +1,35 @@
+import java.util.Scanner;
+public class Test36{
+	public static void main(String[] args){
+		Scanner input = new Scanner(System.in);
+		System.out.println("请输入月份：");
+		int mouth = input.nextInt();
+		if(mouth==1){
+			System.out.println("一月：31天");
+		}else if(mouth==2){
+			System.out.println("二月：28天");
+		}else if(mouth==3){
+			System.out.println("三月：31天");
+		}else if(mouth==4){
+			System.out.println("四月：30天");
+		}else if(mouth==5){
+			System.out.println("五月：31天");
+		}else if(mouth==6){
+			System.out.println("六月：30天");
+		}else if(mouth==7){
+			System.out.println("七月：31天");
+		}else if(mouth==8){
+			System.out.println("八月：31天");
+		}else if(mouth==9){
+			System.out.println("九月：30天");
+		}else if(mouth==10){
+			System.out.println("十月：31天");
+		}else if(mouth==11){
+			System.out.println("十一月：30天");
+		}else if(mouth==12){
+			System.out.println("十二月：31天");
+		}
+		
+		
+	}
+}

@@ -1,0 +1,33 @@
+import java.util.Scanner;
+public class Test28{
+	public static void main(String[] args){
+		for(int i=0;i<10;i++){
+		if(i==5){
+			continue;
+		}
+			//System.out.println(i);
+			
+		}
+		int j = 0;
+		for(;j<10;j++){
+			//System.out.println(j);
+		}
+		//死循环
+		//for(int i=0;;i++){
+			//system.out.println(i);
+		//}
+		for(int i=0;i<10;){
+		//	System.out.println(i);
+			i++;
+		}
+		int x=0;
+		for(;x<10;){
+		//	System.out.println(x);
+			x++;
+		}
+		//死循环
+		for(;;){
+			System.out.println();
+		}
+	}
+}

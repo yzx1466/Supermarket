@@ -1,0 +1,13 @@
+import java.util.Scanner;
+public class Test27{
+	public static void main(String[] args){
+		Scanner input = new Scanner(System.in);
+		System.out.println("想找个几岁以下的对象呀");
+		int ren = input.nextInt();
+		if(ren <=28 ){
+		System.out.println("小女朋友请查收");
+		}else if(ren>28){
+		System.out.println("老女人，这你都要啊");	
+		}
+	}
+} 
