@@ -9,4 +9,3 @@ public class Test8{
 	System.out.println(w+q+b+s+g);
 	} 
 }
-/
