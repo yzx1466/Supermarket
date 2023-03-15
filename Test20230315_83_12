@@ -1,0 +1,79 @@
+/**
+package Test;
+//普通代码块
+public class Test12 {
+
+	public static void main(String[] args) {
+		
+	}
+
+}
+class Student1{
+	public void study() {
+		//限制作用域
+		{
+			 int i = 10;
+			System.out.println(“我是普通代码块”);
+		}
+		 
+	}
+}
+*/
+/**
+package Test;
+//构造代码块
+public class Test12 {
+
+	public static void main(String[] args) {
+		Student1 s = new Student1();
+	}
+
+}
+class Student1{
+	{
+		System.out.println("我是构造代码块");
+	}
+	public Student1() {
+	System.out.println("构造方法");
+	}
+	public void study() {
+		//限制作用域
+		{
+			int i = 10;
+			System.out.println("我是普通代码块");
+		}
+		
+	}
+}
+*/
+
+package Test;
+//静态代码块(重点）
+public class Test12 {
+
+	public static void main(String[] args) {
+		Student1 s = new Student1();
+		//限制作用域
+		{
+			int i = 10;
+			System.out.println("普通代码块i="+i);
+		}
+		
+	}
+
+}
+class Student1{
+	
+	static {
+		System.out.println("我是静态代码块");
+	}
+	{
+		System.out.println("我是构造代码块");
+	}
+	public Student1() {
+	System.out.println("构造方法");
+	}
+	
+}
+
+

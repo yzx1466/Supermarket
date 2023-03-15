@@ -1,0 +1,37 @@
+package Test;
+/**
+ *面向对象：以对象为单位，通过调度组合不同的对象来完成某一件事情
+ *面向过程：以步骤为单位，一步一步完成某一个具体事情
+ */
+public class Test5{
+	public static void main(String[] args){
+		//int i = 0;
+		Yang y = null;//声明一个类的变量（除了八种基本数据类型以外，都是引用数据类型，包括数组）
+		//创建一个Yang类型的对象，实例化对象
+		y = new Yang();
+		//有了对象，就可以调用属性和方法
+		y.name = "子熙";
+		y.age = 18;
+		y.sleep = 8;
+		y.run();//调用方法，方法就会被执行
+		y.sleep();
+		
+		//匿名对象:只能使用一次，用完对象就被释放
+		new Yang().sleep();
+		y = null;//把对象释放
+		//y.sleep();//当对象不存在时，调用该对象的属性和方法将报错（空指针）
+	}
+}
+//自定义一个类（类型）
+class Yang{
+	//在类中定义属性
+	String name;
+	int age;
+	int sleep;
+	public void run(){
+		System.out.println("名字:"+name+",年龄:"+age+",我姓杨");
+	}
+	public void sleep(){
+		System.out.println("我一天睡:"+sleep+"小时");
+	}
+}

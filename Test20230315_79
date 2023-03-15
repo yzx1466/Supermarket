@@ -1,0 +1,16 @@
+public class Test79{
+	public static void main(String[] args){
+		long sum;
+		Test79 y = new Test79();
+		sum = y.getSum(5);
+		System.out.println("sum="+sum);
+	}
+	public long getSum(long n){
+		long i,sum =0;
+		for(i = 0;i<=n;i++){
+			sum+=i;
+		}
+		return sum;
+	}
+}
+

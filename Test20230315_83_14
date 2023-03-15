@@ -1,0 +1,29 @@
+package Test;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class Test14{
+	public static void main(String[] args) {
+		int age;
+		Scanner reader = new Scanner(System.in);
+		do {
+			try {
+				System.out.println("请输入年龄");
+				age = reader.nextInt();
+				if(age<20 || age>50) {
+					throw new Exception("年龄必须在20到50之间");
+				}
+				System.out.println("你的年龄"+age);
+				break;
+			}catch(InputMismatchException e) {
+				System.out.println("年龄有误，请重新输入");
+				reader.next();
+			}catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}while(true);
+		}
+	
+	} 
+

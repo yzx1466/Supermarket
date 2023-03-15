@@ -1,0 +1,34 @@
+public class Test82 {
+
+	public static void main(String[] args) {
+		Person p1 = new Person();
+		//p1.name = "熙熙";
+		//p1.age =  18;
+		p1.setName("熙熙");	
+		p1.setAge(18);
+	}
+}
+//没有封装之前
+class Person{
+	//属性封装
+	private String name;//类的name;
+	private int age;
+	//getter and setter
+	//对外提供一个为name属性设值的方法
+	public void setName(String name) {//参数的name;
+		this.name = name;//等号后面的name与26行相同；
+		System.out.println(name);
+	}
+	//对外提供一个获取name属性的方法
+	public String getName() {
+		return name;
+	}
+	public void setAge(int age) {
+		this.age = age;
+		System.out.println(age);
+	}
+	public int getAge() {
+		return age;
+	} 
+	
+}

@@ -1,0 +1,22 @@
+package Test;
+
+import java.util.Scanner;
+
+public class Test4 {
+
+	public static void main(String[] args) {
+		String[] str = {"china","india","korea","japan"};
+		Scanner reader = new Scanner(System.in);
+		System.out.println("请输入你要的名字");
+		String mingzi = reader.next();
+		for(int i = 0;i<str.length;i++) {
+			if(mingzi.equals(str[i])) {//equals("=")
+				System.out.println("找到了"+str[i]);
+				System.out.println("下标为"+i);
+				break;
+			}if(i == str.length-1){
+				System.out.println("没找到");
+			}
+		}
+	}
+}

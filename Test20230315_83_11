@@ -1,0 +1,50 @@
+package Test;
+
+public class Test11 {
+
+	public static void main(String[] args) {
+		//Role y1 = new Role("杨子熙","中国");
+		//Role y2 = new Role("杨苹","中国");
+		//Role y3 = new Role("杨帆","中国");
+		Role y1 = new Role("杨帆");
+		Role y2 = new Role("杨苹");
+		Role y3 = new Role("杨子熙");
+		
+		System.out.println(y1.getInfo());
+		System.out.println(y2.getInfo());
+		System.out.println(y3.getInfo());
+	}
+
+}
+class Role{
+	private  String name;
+	private static  String country = "中国";//静态变量（全局变量）
+	public Role(String name,String country) {
+		this.name = name;
+		this.country = country;
+	}
+	public Role(String name) {
+		this.name = name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getName(){
+		return name;
+	}
+	//静态方法不能访问非静态的数据
+	public static void setCountry(String country) {
+		Role.country = country;
+	}
+	/**
+	public void setCountry(String country){
+		this.country = country;
+	}
+	public String getCountry() {
+		return country;
+	}
+	*/
+	public String getInfo(){//Info信息
+		return "name="+name+",country="+country;
+	}
+}
