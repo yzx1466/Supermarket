@@ -1,0 +1,22 @@
+import java.util.Scanner;
+public class Test58{
+	public static void main(String[] args){
+		Scanner input = new Scanner(System.in);
+		System.out.println("请输入一个数");
+		int n = input.nextInt();
+		int i = 1;
+		int sum = 0;
+ 		do {
+			if(n%i==0 ){
+				sum+=i;
+			}
+			i++;
+		}while(i <n);
+			if(n == sum){
+				System.out.println("完全数");
+			}
+			if(n != sum){
+				System.out.println("不是完全数");
+			}
+	}
+}

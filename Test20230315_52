@@ -1,0 +1,21 @@
+import java.util.Scanner;
+public class Test52{
+	public static void main(String[] args){
+		int[] nums = {50,30,17,6,22,27};
+		Scanner input = new Scanner(System.in);
+		System.out.println("请输入你要的数：（50以内）");
+		int userNum = input.nextInt();
+		boolean flag = false;
+		for(int x:nums){
+			if(userNum==x){
+			flag = true;
+				break;
+			}				
+		}
+		if(flag){
+			System.out.println("猜对了");
+		}else{
+			System.out.println("猜错了");
+		}
+	}
+}

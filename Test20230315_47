@@ -1,0 +1,20 @@
+import java.util.Scanner;
+public class Test47{
+	public static void main(String[] args){
+		Scanner input = new Scanner(System.in);
+		System.out.println("请输入三个数");
+		int n1 = input.nextInt();
+		int n2 = input.nextInt();
+		int n3 = input.nextInt();
+		if(n1>n2 && n2>n3 || n1>n3 && n3>n2){
+			System.out.println("最大值：" + n1);
+		}
+			if(n2>n1 && n1>n3 || n2>n3 && n3>n1){
+				System.out.println("最大值：" + n2);
+			}
+				if(n3>n2 && n2>n1 || n3>n1 && n1>n2){
+					System.out.println("最大值：" + n3);
+				}
+	}
+}
+

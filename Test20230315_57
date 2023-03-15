@@ -1,0 +1,25 @@
+import java.util.Scanner;
+public class Test57{
+	public static void main(String[] args){
+		float i = 1;
+		float r = 1;
+		float sum = 0;
+		float z = 0;
+		Scanner input = new Scanner(System.in);
+		System.out.println("请输入一个数");
+		int  n = input.nextInt(); 
+		for(;i<=n;i++){
+		if(i%2==0){
+			z = -1;
+			r = r*i;
+			z = z/r;
+		}else{
+			z = 1;
+			r = r*i;
+			z = z/r;
+		}
+		sum+=z;
+		}
+		System.out.println(sum);
+	}
+}

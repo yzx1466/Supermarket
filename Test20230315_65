@@ -1,0 +1,19 @@
+public class Test65{
+	public static void main(String[] args){
+		int i = 1;
+		int sum = 0;
+		int n = 3*100-2;
+		int z = 0;
+		for(;i<=n;i=i+3){
+			if(i%2==0){
+				z = -1;
+				z*= i;
+			}else{
+				z = 1;
+				z*= i;
+			}
+			sum+=z;
+		}
+		System.out.println(sum);
+	}
+}

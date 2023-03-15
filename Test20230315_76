@@ -1,0 +1,49 @@
+import java.util.Scanner;
+public class Test76{
+	public static void main(String[] args){
+	Scanner reader = new Scanner(System.in);
+	System.out.println("你要输入几个数：");
+	int a = reader.nextInt();
+	int[] b = new int[a];
+	for(int i = 0;i<a;i++){
+		System.out.println("第"+(i+1)+"个数是：");
+		b[i] = reader.nextInt();
+	}
+	int max = b[0];
+	int min = b[0];
+	for(int i = 0;i<a;i++){
+		if(b[i]>max){
+			b[i] = b[i]+max;
+			max = b[i]-max;
+			b[i] = b[i]-max;
+		}
+		if(b[i]<min){
+			b[i] = b[i]+min;
+			min = b[i]-min;
+			b[i] = b[i]-min;
+		}
+	}
+	System.out.println("最大值："+max);
+	System.out.println("最小值："+min);
+	System.out.println("-------------");
+	System.out.println("你要输入几个数：");
+	int c = reader.nextInt();
+	int[] d = new int[c];
+	for(int i = 0;i<c;i++){
+		System.out.println("第"+(i+1)+"个数是：");
+		d[i] = reader.nextInt();
+	}
+	for(int i = 0;i<d.length-1;i++){
+		for(int j = 0;j<d.length-1-i;j++){
+			if(d[j]>d[j+1]){
+				d[j] = d[j]+d[j+1];
+				d[j+1] = d[j]-d[j+1];
+				d[j] = d[j]-d[j+1];
+			}
+		}
+	}
+		for(int e : d){
+			System.out.println(e);
+		}
+	}
+}

@@ -1,0 +1,18 @@
+public class Test39{
+	public static void main(String[] args){
+		boolean  bool = isRunNian(2016); 
+		if(bool){
+			System.out.println("闰年");
+		}else{
+			System.out.println("平年");
+		}
+	}
+	public static boolean isRunNian(int year){
+		if((year%4==0 && year%100!=0) || year%400==0){
+			return true;
+		}else{
+			return false;
+		}	
+		}
+	}
+

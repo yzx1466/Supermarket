@@ -1,0 +1,31 @@
+import java.util.Scanner;
+public class Test45{
+	public static void main(String[] args){
+		Scanner input = new Scanner(System.in);
+		System.out.println("输出一个整数");
+		int num = input.nextInt();
+		int n = 14;
+		int time = 5;
+		int u = 0;
+		for(;u < time;u++){
+			if(u != 0){
+				System.out.println("再猜一次");
+				num = input.nextInt();
+			}
+			if(n < num){
+				System.out.println("猜大了");
+				continue;
+			}
+			if(n > num){
+				System.out.println("猜小了");
+				continue;
+			}if(n == num){
+				System.out.println("猜对了");
+				break;
+			}
+		}
+		if(u == time){
+			System.out.println("没机会了");
+		}
+	}
+}

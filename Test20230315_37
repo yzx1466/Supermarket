@@ -1,0 +1,17 @@
+public class Test37{
+	public static void main(String[] args){
+		getMune();
+		getMune();
+	    getMune();
+		getMune();
+	}
+	public static void getMune(){
+	System.out.println("--菜单--");
+	System.out.println("红烧狮子头");
+	System.out.println("老北京烤鸭");
+	System.out.println("蒸羊羔");
+	System.out.println("蒸熊掌");
+	System.out.println("烧花鸡");
+	}
+}
+

@@ -1,0 +1,24 @@
+import java.util.Scanner;
+public class Test75{
+	public static void main(String[] args){
+		String str,result;
+		int start,len;
+		Scanner reader = new Scanner(System.in);
+		System.out.println("你要的字符串：");
+		str = reader.nextLine();
+		do{
+			System.out.println("起始位置：");
+			start = reader.nextInt();
+		}while(start<0 ||start >= str.length());
+		do{
+			System.out.println("长度");
+			len = reader.nextInt();
+		}while(len<0);
+		if(start + len>str.length()){
+			result = str.substring(start);
+		}else{
+			result = str.substring(start,start+len);
+		}
+		System.out.println(result);
+	}
+}

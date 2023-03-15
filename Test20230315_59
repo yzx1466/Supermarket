@@ -1,0 +1,12 @@
+public class Test59{
+	public static void main(String[] args){
+		int n = 3000;
+		int i = 0;
+		for(n = 3000;n>=5;n/=2){
+			System.out.println();
+			i++;
+			System.out.println("第" + i +"天："+ n +"厘米");
+		}
+		System.out.println("需要"+ i +"天后会短于5厘米");
+	}
+}

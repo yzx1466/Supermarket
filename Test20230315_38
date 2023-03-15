@@ -1,0 +1,19 @@
+import java.util.Scanner;
+public class Test38{
+	public static void main(String[] args){
+		Scanner intput = new Scanner(System.in);
+		System.out.println("请输入要打印星星的行数");
+		int num = intput.nextInt();
+		printStar(num);
+	}	
+	public static void printStar(int line){
+			//外循环控制行数
+		for(int i=1;i<=line;i++){
+			//内循环控制列数
+			for(int j=1;j<=i;j++){
+				System.out.print("*");
+			}
+			System.out.println();
+		}
+	}
+}
