@@ -10,3 +10,4 @@ public class Test7{
 	System.out.println("圆柱体的体积是："+result);
 	} 
 }
+;
