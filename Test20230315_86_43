@@ -1,0 +1,23 @@
+package Test;
+
+import static java.lang.Math.floor;
+
+import java.util.Random;
+public class Test43_MathRandomDemo {
+
+	public static void main(String[] args) {
+		//MathDemo
+		System.out.println(Math.PI);
+		System.out.println(Math.abs(-10)); //返回double类型的绝对值
+		System.out.println(Math.random()*100);
+		System.out.println(Math.round(Math.random()*100000)/100000.0);
+		System.out.println(Math.sqrt(4));
+		System.out.println(floor(1.23456));
+		//Random
+		Random r = new Random();
+		System.out.println(r.nextLong());
+		System.err.println(r.nextInt(10));
+	}
+
+}
+
