@@ -1,0 +1,45 @@
+package Test;
+
+public  class Test19 {
+
+	public static void main(String[] args) {
+		Man man = new Man();
+		man.move();
+		man.eat();
+		man.sleep();
+		Women women = new Women();
+		women.move();
+		women.eat();
+		
+	}
+
+}
+abstract class Animal{
+	public abstract void move();
+}
+
+abstract class Person extends Animal{
+	public abstract void eat();//抽象方法   
+	public void sleep() {
+		System.out.println("睡觉");
+	}
+}
+
+class Man extends Person{
+	public void move() {
+		System.out.println("男人我在走");
+	}
+	public void eat() {
+		System.out.println("我爱吃人");
+	}
+}
+
+class Women extends Person{
+	public void move(){
+		System.out.println("女人在走");
+	}
+	public void eat(){
+		System.out.println("我爱吃水果");
+	}
+} 
+

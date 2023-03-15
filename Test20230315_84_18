@@ -1,0 +1,45 @@
+package Test;
+
+public class Test18 {
+
+	public static void main(String[] args) {
+		HomeDog homeDog = new HomeDog("旺财");
+		homeDog.print();
+		homeDog.eat();
+		HuskyDog huskyDog = new HuskyDog("哈士奇");
+		huskyDog.print();
+		huskyDog.eat();
+	}
+}
+class Dog{
+	protected String name;
+	private String sex;
+	public void eat() {
+		System.out.println("我是"+name+",我在吃饭");
+	}
+	public  Dog(String name,String sex) {
+		this.name = name;
+		this.sex = sex;
+		System.out.println("我是Dog的构造方法");
+	}
+}
+
+class HomeDog extends Dog{
+	public  HomeDog(String name) {
+		super(name,"公");
+		System.out.println("我是HomeDog的构造方法");
+	}
+	public void print() {
+		System.out.println(name+"我是家犬");
+	}
+}
+
+class HuskyDog extends Dog{
+	public  HuskyDog(String name) {
+		super(name,"母");
+		System.out.println("我是HuskyDog的构造方法");
+	}
+	public void print() {
+		System.out.println(name+"我是Husky，我能跳舞");
+	}
+}

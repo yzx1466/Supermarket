@@ -1,0 +1,33 @@
+package Test;
+
+public class Test25 {
+
+	public static void main(String[] args) {
+		UserManager um = new UserManager();
+		um.action("admin", "del");
+	}
+	
+}
+abstract class BaseMananger{
+	
+	public void action(String name,String method) {
+		if("admin".equals(name)) {
+			execute(method);
+		}else{
+			System.out.println("你没有操作权限，请联系管理员");
+		}
+	}
+	public abstract void execute(String method);
+}
+
+class UserManager extends BaseMananger{
+	public void execute(String method) {//execute执行
+		//用户是否登陆的验证
+		//验证成功后才可以执行以下操作
+		if("add".equals(method)) {
+			System.out.println("执行添加操作");
+		}else if("del".equals(method)) {
+			System.out.println("执行删除操作");
+		}
+	}
+}

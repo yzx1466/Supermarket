@@ -1,0 +1,97 @@
+package Test;
+
+public class Test31 {
+
+	public static void main(String[] args) {
+		Outer outer = new Outer();
+		//在外部创建成员内部类的实例，因为成员内部类需要依赖外部类的对象
+		//通常情况下，不建议这样实例化内部类的对象
+		Outer.Inner inner = outer.new Inner();
+		//inner.print();
+		//-------成员内部类---------
+		outer.innerPrint();
+		//-------方法内部类---------
+		outer.show();
+		//-------静态内部类---------
+		Outer.Inner3 inner3 = new Outer.Inner3();
+		inner3.print();
+		//-------匿名继承式内部类---------
+		outer.print1();
+		//-------匿名接口式内部类---------
+		outer.print2();
+		//-------匿名参数式内部类---------
+		outer.print3(new Eat() {
+			public void eat() {
+				System.out.println("参数式内部类");
+			}
+		});
+	}
+	
+}
+class Outer{
+	private String name = "Outer";
+	//-------成员内部类---------
+	public void innerPrint() {
+		Inner inner = new Inner();
+		inner.print();
+	}
+	//成员内部类
+	class Inner{
+		private void print() {
+			System.out.println("成员内部类"+name);
+		}
+	}
+	
+	//-------方法内部类---------
+	//show方法的局部变量或方法的参数，实际必须是常量final
+	public void show() {
+		final int x = 10;
+		class Inner2{
+			public void println() {
+				//x++;从内部类引用的本地变量必须是最终变量或实际上的最终变量
+				System.out.println("方法内部类"+x+name);
+			}
+		}
+		Inner2 inner2 = new Inner2();
+		inner2.println();
+	}
+	
+	//-------静态内部类---------
+	static class Inner3{
+		public void print() {
+			System.out.println("静态内部类");
+		}
+	}
+	//-------匿名内部类---------
+	//继承式
+	public void print1() {
+		//由于cat是抽象类，所以不能实例化，需要在最后加上{};69～73行为一个语句
+		Cat cat = new Cat() {
+			public void eat() {
+				System.out.println("eat:继承式内部类");
+			}
+		};
+		cat.eat();
+	}
+	//接口式
+	public void print2() {
+		Eat eat = new Eat() {
+			public void eat() {
+				System.out.println("eat:接口式内部类");
+			}
+		};
+		eat.eat();
+	}
+	//参数式
+	public void print3(Eat eat) {
+		eat.eat();
+	}
+}
+//接口
+interface Eat{
+	public void eat();
+}
+//继承
+abstract class Cat{
+	public abstract void eat();
+}

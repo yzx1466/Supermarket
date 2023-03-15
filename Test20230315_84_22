@@ -1,0 +1,37 @@
+package Test;
+
+public class Test22 {
+	private static final int PERSON_NUM = 10;
+	public static void main(String[] args) {
+		
+		System.out.println(Constant.PERSON_NUM);
+		FinalClass fc = new FinalClass();
+		fc.setLength(10);
+	}
+
+}
+//常量类(工具类):在实际项目开发中，常量类通常用于定义项目中一些公共的，不变的，数据
+final class Constant{
+	public static final int PERSON_NUM = 10;//人数
+	public static final String SERVER_ROOT_URL = "http.//www.baidu.com";
+	public static final String CACHE_PATH = "data_cache";
+
+}
+class FinalClass{
+	public final int DAY_NUM;
+	public FinalClass(){
+		DAY_NUM = 22;
+	}
+	public final void print() {
+		System.out.println("六");
+	}
+	public void setLength(final int size) {
+		
+		System.out.println(size);
+	}
+}
+class SubClass extends FinalClass{
+//	public void print() {
+//		System.out.println("七");
+//	}
+}

@@ -1,0 +1,47 @@
+package Test;
+
+public class Test23 {
+
+	public static void main(String[] args) {
+		Girl mm = new Girl("玛丽");
+		mm.sleep();
+		mm.eat();
+		mm.run();
+		mm.print();
+	}
+
+}
+interface IEat{
+	//public abstract void eat();//接口中只能定义抽象方法
+	void eat();//相当于public abstract void eat();接口中定义的方法没有声明修饰符，默认为public abstract
+	//public static final int NUM = 10;//在接口中定义一个常量
+	int NUM = 10;//相当于public static final int NUM = 10;常量简写
+	public default void print() {//default默认的
+		System.out.println("eat");
+	}
+}
+interface IRun{
+	void run();
+}
+interface ISleep extends IEat,IRun{//接口可以多继承，类只能单继承
+	void sleep();
+}
+//具体类实现接口，必须实现接口的方法
+class Girl implements ISleep,IRun{
+	private String name;
+	public Girl(String name) {
+		this.name = name;
+	}
+	public Girl() {}
+	public void sleep() {
+		System.out.println("我爱睡觉");
+	}
+	public void eat() {
+		System.out.println("我是"+name+"的女朋友，我爱吃水果");
+	}
+	public void run() {
+		System.out.println("吃完就跑");
+	}
+}
+
+

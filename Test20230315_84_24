@@ -1,0 +1,76 @@
+package Test;
+
+public class Test24 {
+
+	public static void main(String[] args) {
+		//用父类的引用指向子类对象(用大的类型来表示小的类型)，(自动转换/向上转型)
+		Chicken1 hc = new HomeChicken("家鸡");
+		//hc.eat();
+		Chicken1 yc = new YeChicken("野鸡");
+		//yc.eat();
+		Chicken1 jc = new JjChicken("尖叫鸡");
+		//jc.eat();
+		
+		//hc = yc;
+		//hc.eat();
+		eat(hc);
+		eat(yc);
+		eat(jc);
+	}
+	//抽象(粒度)
+	public static void eat(Chicken1 c) {
+		System.out.println("鸡吃饭");
+		c.eat();//eat();
+		//当我们需要把父类的实例强制转换为子类引用时，为了避免类型转换异常java.lang.ClassCastException
+		//我们需要在转换之前作类型检查（判断）
+		if(c instanceof JjChicken) {//成立的条件是，对象本身及对象的父类型，都可以通过检查
+			JjChicken jc = (JjChicken)c;
+			jc.song();
+		}
+	}
+}
+//鸡
+abstract class Chicken1{
+	private String name;
+	public Chicken1() {}
+	public Chicken1(String name) {
+		this.name = name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getName(){
+		return name;
+	}
+	public abstract void eat();
+}
+//家鸡
+class HomeChicken extends Chicken1{
+	public HomeChicken(String name) {
+		super(name);
+	}
+	public void eat() {
+		System.out.println(this.getName()+":爱吃米");
+	}
+}
+//野鸡
+class YeChicken extends Chicken1{
+	public YeChicken(String name) {
+		super(name);
+	}
+	public void eat() {
+		System.out.println(this.getName()+":我爱吃虫子");
+	}
+}
+//尖叫鸡
+class JjChicken extends Chicken1{
+	public JjChicken(String name) {
+		super(name);
+	}
+	public void eat() {
+		System.out.println(this.getName()+":我不吃东西");
+	}
+	public void song() {
+		System.out.println(this.getName()+":哇扑领老姨");
+	}
+}

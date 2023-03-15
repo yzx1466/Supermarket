@@ -1,0 +1,60 @@
+	package Test;
+
+public class Test20{
+
+	public static void main(String[] args) {
+		HomeDog1 homeDog = new HomeDog1("旺财");
+		homeDog.print();
+		homeDog.eat();
+		HuskyDog1 huskyDog = new HuskyDog1("哈士奇");
+		huskyDog.print();
+		huskyDog.eat();
+		
+		
+		
+	}
+}
+class Dog1{
+	protected String name;
+	private String sex;
+	public void eat() {
+		System.out.println("我是"+name+",我在吃饭");
+	}
+	public  Dog1(String name,String sex) {
+		this.name = name;
+		this.sex = sex;
+		System.out.println("我是Dog的构造方法");
+	}
+}
+
+class HomeDog1 extends Dog1{
+	public  HomeDog1(String name) {
+		super(name,"公");
+		System.out.println("我是HomeDog的构造方法");
+	}
+	public void print() {
+		System.out.println(name+"我是家犬");
+	}
+	//重写父类的方法
+	public void eat() {
+		super.eat();
+		System.out.println("我是家犬，我喜欢吃骨头");
+	}
+}
+
+class HuskyDog1 extends Dog1{
+	public  HuskyDog1(String name) {
+		super(name,"母");
+		System.out.println("我是HuskyDog的构造方法");
+	}
+	public void print() {
+		//super.属性表示调用父类的属性，如果是继承过来的属性，那么super可以省略
+		System.out.println(super.name+"我是Husky，我能跳舞");
+	}
+	//重写父类的方法
+	public void eat() {
+		super.eat();//调用父类的方法
+		System.out.println("我是哈士奇，我喜欢吃鸡肝");
+	}
+}
+
