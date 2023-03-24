@@ -1,0 +1,108 @@
+package Test;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
+/**
+ * 缓存的目的：
+ * 解决在写入文件操作时，频繁的操作文件所带来的性能降低的问题
+ * BufferedOutputStream内部默认的缓存大小为8KB，每次写入时储存到缓存中的byte数组中，当数组存满时，会把数组中的数据写到文件，
+ * 并且缓存下标归零
+ * 
+ * 字符流
+ * 1、加入字符缓冲流，增强读取功能（readLine）
+ * 2、更高效读取数据
+ * FileReader:内部使用InputStreamReader(sun.nio.cs.StreamDecoder),解码过程,把字节转成字符，默认缓存大小是8K
+ * BufferedReader:默认缓存大小也是8K,但可以手动指定缓存大小，把数据读取到缓存中，减少每次转换过程，效率更高
+ * BufferedWriter:同上
+ * @author yangzixi
+ *
+ */
+public class Test58_BuferStream {
+	
+	//字符
+	private static void charWriter() {
+		File file = new File("/Users/yangzixi/yang/vince.txt");
+		try {
+			Writer writer = new FileWriter(file);
+			BufferedWriter bw = new BufferedWriter(writer);
+			bw.write("小桥流水人家");
+			bw.flush();//flush()方法可以强迫输出流(或缓冲的流)发送数据，即使此时缓冲区还没有填满，以此来打破这种死锁的状态
+			bw.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	private static void charReader() {
+		File file = new File("/Users/yangzixi/yang/vince.txt");
+		try {
+			Reader reader = new FileReader(file);
+			//为字符流提供缓冲，以达到高效读取的目的
+			BufferedReader br = new BufferedReader(reader);
+			char[] cs = new char[1024];
+			int len =-1;
+			while((len = br.read(cs))!=-1) {
+				System.out.println(new String(cs,0,len));
+			}
+			br.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//字节
+	private static void byteReader() {
+		File file = new File("/Users/yangzixi/yang/vince.txt");
+		try(BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file))){
+			byte[] bytes = new byte[1024];
+			int len = -1;
+			while((len = bis.read(bytes))!=-1){
+				System.out.println(new String(bytes,0,len));
+			}
+			bis.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	private static void byteWriter() {
+		File file = new File("/Users/yangzixi/yang/vince.txt");
+		try {
+			OutputStream out = new FileOutputStream(file);
+			//构造一个字节缓冲流
+			BufferedOutputStream bos = new BufferedOutputStream(out);
+			
+			String info = "小桥流水人家";
+			bos.write(info.getBytes());
+			
+			bos.close();//执行完bos，会有一个try语句块，会自动关闭out
+			//out.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	public static void main(String[] args) {
+		byteWriter();
+		byteReader();
+	}
+
+}
+

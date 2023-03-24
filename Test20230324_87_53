@@ -1,0 +1,115 @@
+package Test;
+
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+
+public class Test53_File {
+
+	public static void main(String[] args) {
+		//File类表示一个文件或目录
+		//C:/test/vince.txt
+		//C:\\test\\vince.txt
+		File f1 = new File(""+File.separator+"Users"+File.separator+"main");
+		if(!f1.exists()) {//判断文件是否存在
+			try {
+				f1.createNewFile();//创建文件
+				System.out.println("文件创建成功");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		//f1.isFile()//文件
+		System.out.println("是否为文件夹："+f1.isDirectory());//文件夹
+		
+		File f2 = new File("/Users/yangzixi/main");
+		boolean b = f2.delete();
+		System.out.println(b);
+		
+		String[] names = f2.list();//列出当前目录下的所有文件名
+		System.out.println(Arrays.toString(names));
+		
+		File[] fs = f2.listFiles();//列出当前目录下的所有文件，以file对象返回
+		for(File f:fs) {
+			System.out.println("length："+f.length());
+			System.out.println("name："+f.getName());
+			System.out.println("相对路径："+f.getPath());
+			System.out.println("绝对路径："+f.getAbsolutePath());
+			System.out.println("是否为隐藏文件路径："+f.isHidden());
+			System.out.println("是否可读文件："+f.canRead());
+			Date data = new Date(f.lastModified());
+			DateFormat df = new SimpleDateFormat("HH:mm:ss");
+			System.out.println("文件最后修改时间："+df.format(data));
+			
+		}
+		//相对路径和绝对路径
+		File f3 = new File("temp.txt");
+		System.out.println(f3.getPath());//temp.txt
+		System.out.println(f3.getAbsolutePath());//C:\QF\千峰教育Java视频教程\第8章\ 文件与IO\2、代码\IODemo\temo.txt
+	
+		//创建新文件夹
+		File f4 = new File("/Users/yangzixi/yang");
+		f4.mkdir();
+		//重命名与移动文件
+//		f4.renameTo(new File("C:/test/yang1"));//重命名
+//		f4.renameTo(new File("\"C:/yang1"));//移动
+		
+		File f5 = new File("/Users/yangzixi/zixi");
+//		File[] files = f5.listFiles(new FileFilter() {
+//			@Override
+//			public boolean accept(File pathname) {
+//				
+//				return pathname.getName().endsWith(".txt");//endWith()以什么结尾
+//			}
+//			
+//		});
+		File[] files = f5.listFiles((pathname)->pathname.getName().endsWith(""));
+		for(File f:files) {
+			System.out.println(f.getName());
+		}	
+		
+	}
+
+}
+
+package Test;
+
+import java.io.File;
+
+/**
+ * 在指定的目录中查找文件
+ * @author yangzixi
+ *
+ */
+public class Test53_FileDome {
+
+	public static void main(String[] args) {
+		findFile(new File("/Users/yangzixi/main"),".jpg");
+	}
+	//查找文件的方法
+	private static void findFile(File target,String ext) {
+		if(target == null)return;
+		//如果文件是目录的话
+		if(target.isDirectory()) {
+			File[] files = target.listFiles();
+			if(files != null) {
+				for(File f:files) {
+					findFile(f,ext);//递归调用
+				}
+			}
+		}else {
+			//此处表示File是一个文件
+			String name = target.getName().toLowerCase();
+			System.out.println(name);
+			if(name.endsWith(ext)) {
+				System.out.println(target.getAbsolutePath());
+			}
+		}
+	}
+}
+

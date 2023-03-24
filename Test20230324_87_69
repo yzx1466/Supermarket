@@ -1,0 +1,144 @@
+package Test;
+
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
+
+public class Test69 {
+
+	public static void main(String[] args) {
+
+//		OutputStream out = new FileOutputStream("xxx");
+//		BufferedOutputStream bos = new BufferedOutputStream(out);
+//		PrintStream ps = new PrintStream(bos);
+//		ps.print(。。。。。。);
+		
+		
+		Test69_Drink drink = new Test69_BeanMilk();
+		Test69_SugerDecorator suger = new Test69_SugerDecorator(drink);
+		Test69_EggDecorator egg = new Test69_EggDecorator(suger);
+		Test69_BlackBeanDecorator black = new Test69_BlackBeanDecorator(egg);
+		
+		System.out.println("你点的豆浆是"+black.description());
+		System.out.println("一共花了"+black.cost()+"元");
+	}
+
+}
+-------------------------------------------
+package Test;
+
+//被装饰者的接口
+public interface Test69_Drink {
+
+	float cost();//计算价格
+	String description();//描述
+}
+-------------------------------------------
+package Test;
+
+/**
+ * 具体的被装饰者类
+ * 豆浆
+ * @author yangzixi
+ *
+ */
+public class Test69_BeanMilk implements Test69_Drink{
+
+	public static void main(String[] args) {
+		
+	}
+
+	@Override
+	public float cost() {
+		return 10f;
+	}
+
+	@Override
+	public String description() {
+		return "纯豆浆";
+	}
+
+}
+-------------------------------------------
+package Test;
+
+/**
+ * 装饰者的基类
+ * @author yangzixi
+ *
+ */
+public abstract class Test69_Decorator implements Test69_Drink{
+
+	private Test69_Drink drink;//要装饰的对象
+	public Test69_Decorator(Test69_Drink drink) {
+		this.drink = drink;
+	}
+	@Override
+	public float cost() {
+		return drink.cost();
+	}
+
+	@Override
+	public String description() {
+		return drink.description();
+	}
+
+}
+-------------------------------------------
+package Test;
+
+public class Test69_BlackBeanDecorator extends Test69_Decorator {
+
+	public Test69_BlackBeanDecorator(Test69_Drink drink) {
+		super(drink);
+	}
+	@Override
+	public float cost() {
+		return super.cost()+2.0f;
+	}
+	@Override
+	public String description() {
+		return super.description()+"+黑豆";
+	}
+}
+-------------------------------------------
+package Test;
+
+public class Test69_EggDecorator extends Test69_Decorator {
+
+	public Test69_EggDecorator(Test69_Drink drink) {
+		super(drink);
+	}
+	@Override
+	public float cost() {
+		return super.cost()+5.0f;
+	}
+	@Override
+	public String description() {
+		return super.description()+"+鸡蛋";
+	}
+}
+-------------------------------------------
+package Test;
+
+/**
+ * 具体的装饰者类
+ * @author yangzixi
+ *
+ */
+public class Test69_SugerDecorator extends Test69_Decorator {
+
+	public Test69_SugerDecorator(Test69_Drink drink) {
+		super(drink);
+	}
+	@Override
+	public float cost() {
+		return super.cost()+1.0f;
+	}
+	
+	@Override
+	public String description() {
+		return super.description()+"+糖";
+	}
+}
