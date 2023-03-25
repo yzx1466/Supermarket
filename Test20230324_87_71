@@ -1,0 +1,44 @@
+package Test;
+
+import java.nio.ByteBuffer;
+
+public class Test71_NIO {
+
+	public static void main(String[] args) {
+		//创建一个字节缓冲区，申请的内存空间是8个字节
+		ByteBuffer buf = ByteBuffer.allocate(8);//allocate分配内存空间
+		
+		System.out.println("position="+buf.position());//position位置
+		System.out.println("limit="+buf.limit());//limit限制
+		System.out.println("capacity="+buf.capacity());//capacity容量
+		
+		System.out.println("------------");
+		//向缓冲区中写入数据
+		buf.put((byte)10);
+		buf.put((byte)20);
+		buf.put((byte)30);
+		buf.put((byte)40);
+		
+		System.out.println("position="+buf.position());//position位置
+		System.out.println("limit="+buf.limit());//limit限制
+		System.out.println("capacity="+buf.capacity());//capacity容量
+		
+		//缓冲区的反转：将原有数据数组大小转换成已有数据数组大小；原有为8，现有为4；
+		buf.flip();//flip()将limit = position；position = 0；
+		System.out.println("------------");
+		System.out.println("position="+buf.position());//position位置
+		System.out.println("limit="+buf.limit());//limit限制
+		System.out.println("capacity="+buf.capacity());//capacity容量
+		
+		//告知在当前位置和限制之间是否有元素。
+		if(buf.hasRemaining()) {
+			//返回当前位置与限制之间的元素个数
+			for(int i  =0;i<buf.remaining();i++) {
+				byte b = buf.get(i);
+				System.err.println(b);
+			}
+		}
+	}
+
+}
+

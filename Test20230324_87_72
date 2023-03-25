@@ -1,0 +1,77 @@
+package Test;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileChannel.MapMode;
+
+/**
+ * 比较IO操作的性能比较：
+ * 1、内存映射最快
+ * 2、NIO读写文件
+ * 3、使用了缓存的IO流
+ * 4、无缓存的IO流
+ * @author yangzixi
+ *
+ */
+public class Test72_CopyFile {
+
+	//内存映射
+	private static void randomAccessFileCopy() throws Exception {
+		RandomAccessFile in = new RandomAccessFile("/Users/yangzixi/yang/vince.txt","r");
+		RandomAccessFile out = new RandomAccessFile("/Users/yangzixi/yang/vince.txt","rw");
+		
+		FileChannel fcIn = in.getChannel();
+		FileChannel fcOut = out.getChannel();
+		
+		Long size = fcIn.size();//输入流的字节大小
+		//输入流的映射缓冲区
+		MappedByteBuffer inBuf = fcIn.map(MapMode.READ_ONLY, 0, size);//map映射 MappedByteBuffer映射缓冲区
+		//输出流的映射缓冲区
+		MappedByteBuffer OutBuf  = fcOut.map(MapMode.READ_WRITE, 0, size);
+		
+		for(int i= 0;i<size;i++) {
+			OutBuf.put(inBuf.get());
+		}
+		//关闭（关闭通道时会写入数据块）缓冲区
+		fcIn.close();
+		fcOut.close();
+		in.close();
+		out.close();
+		System.out.println("copy success");
+	}
+	/**
+	 * 通过文件通道实现文件的复制
+	 * @throws Exception
+	 */
+	
+	private static void CopyFile() throws Exception {
+		//创建一个输入文件的通道
+		FileChannel fcIn  = new FileInputStream("/Users/yangzixi/yang/vince.txt").getChannel();
+		//创建一个输出文件的通道
+		FileChannel fcOut = new FileOutputStream("/Users/yangzixi/vince.txt").getChannel();
+		
+		ByteBuffer buf = ByteBuffer.allocate(1024);
+		while(fcIn.read(buf)!=-1) {
+			buf.flip();
+			fcOut.write(buf);
+			buf.clear();
+		}
+		fcIn.close();
+		fcOut.close();
+		System.out.println("copy success");
+	}
+	public static void main(String[] args) {
+		try {
+			//CopyFile();
+			randomAccessFileCopy();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}
