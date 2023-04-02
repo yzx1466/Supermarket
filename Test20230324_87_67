@@ -85,3 +85,13 @@ public class Test67_Properties {
     }
 
 }
+------------------------------------------------
+db.password=123
+db.username=admin
+app.version=1
+------------------------------------------------
+#update config
+#Sat Mar 25 18:09:53 CST 2023
+db.password=654321
+db.username=vince
+app.version=2
