@@ -1,0 +1,47 @@
+package Test;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Map接口1.8新增方法介绍
+ * 
+ * @author yangzixi
+ *
+ */
+public class Test79_MapNewMethod {
+
+	public static void main(String[] args) {
+		Map<Integer,String> map = new HashMap<>();
+		map.put(1,"Demon");
+		map.put(2,"tim");
+		map.put(3,"tom");
+//		
+//		String value = map.getOrDefault(4, "null");
+//		System.out.println(value);
+//		
+//		//只会添加不存在相同key的值
+//		String val = map.putIfAbsent(4,"vince");
+//		System.out.println(val);
+//		map.forEach((k,v)->System.out.println(k+"->"+v));
+		
+		//根据键和值都匹配时，才删除
+//		map.remove(1,"Demon");
+//		map.forEach((k,v)->System.out.println(k+"->"+v));
+		
+		//替换
+//		map.replace(3, "vince");
+//		map.replace(3,"tom", "vince");
+//		map.forEach((k,v)->System.out.println(k+"->"+v));
+		
+		//合并
+//		map.compute(1, (k,v1)->v1+"1");
+//		map.computeIfPresent(2, (key,val)->val+"test");
+//		map.forEach((k,v)->System.out.println(k+"->"+v));
+		
+		//合并
+		map.merge(8, "888", (oldVal,newVal)->oldVal.concat(newVal));
+		map.forEach((k,v)->System.out.println(k+"->"+v));
+	}
+}
+

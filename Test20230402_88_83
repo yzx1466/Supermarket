@@ -1,0 +1,189 @@
+package Test;
+
+/**
+ * 对象一对多关系
+ * @author yangzixi
+ *
+ */
+public class Test83_OneToMany {
+
+	
+	public static void main(String[] args) {
+		Test83_Teacher t1 = new Test83_Teacher("张老师",38,"女");
+		Test83_Student s1 = new Test83_Student("小李",10);
+		Test83_Student s2 = new Test83_Student("小王",11);
+		Test83_Student s3 = new Test83_Student("小杨",12);
+		
+		//关联关系
+		t1.getStudents().add(s1);
+		t1.getStudents().add(s2);
+		t1.getStudents().add(s3);
+		
+		s1.setTeacher(t1);
+		s2.setTeacher(t1);
+		s3.setTeacher(t1);
+		
+		print(t1);
+	}
+
+	private static void print(Test83_Teacher t1) {
+		System.out.println(t1.getName());
+		for(Test83_Student s:t1.getStudents()) {
+			System.out.println(s);
+		}
+	}
+
+}
+----------------------------------------------------------
+package Test;
+
+import java.util.HashSet;
+//一个老师对应多个学生
+public class Test83_Teacher {
+
+	private String name;
+	private int age;
+	private String sex;
+	private HashSet<Test83_Student> students = new HashSet<>();
+	
+	public HashSet<Test83_Student> getStudents() {
+		return students;
+	}
+	public void setStudents(HashSet<Test83_Student> students) {
+		this.students = students;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+	public Test83_Teacher(String name, int age, String sex) {
+		super();
+		this.name = name;
+		this.age = age;
+		this.sex = sex;
+	}
+	public Test83_Teacher() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	@Override
+	public String toString() {
+		return "Test83_Teacher [name=" + name + ", age=" + age + ", sex=" + sex + "]";
+	}
+	
+}
+-----------------------------------------------------------
+package Test;
+
+public class Test83_Student {
+
+	private int sid;
+	public int getSid() {
+		return sid;
+	}
+	public void setSid(int sid) {
+		this.sid = sid;
+	}
+	private String name;
+	private int age;
+	private Test83_Teacher teacher;
+	
+	public Test83_Teacher getTeacher() {
+		return teacher;
+	}
+	public void setTeacher(Test83_Teacher teacher) {
+		this.teacher = teacher;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public Test83_Student(String name, int age) {
+		super();
+		this.name = name;
+		this.age = age;
+	}
+	public Test83_Student() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	@Override
+	public String toString() {
+		return "Test83_Student [name=" + name + ", age=" + age + "]";
+	}
+	
+}
+-----------------------------------------------------------
+package Test;
+
+public class Test83_Course {
+
+	private String cname;
+	private int cid;
+	public String getCname() {
+		return cname;
+	}
+	public void setCname(String cname) {
+		this.cname = cname;
+	}
+	public int getCid() {
+		return cid;
+	}
+	public void setCid(int cid) {
+		this.cid = cid;
+	}
+}
+-----------------------------------------------------------
+package Test;
+
+public class Test83_StudentAndCourse {
+
+	private int id;
+	private int sid;
+	private int cid;
+	
+	
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getSid() {
+		return sid;
+	}
+	public void setSid(int sid) {
+		this.sid = sid;
+	}
+	public int getCid() {
+		return cid;
+	}
+	public void setCid(int cid) {
+		this.cid = cid;
+	}
+	
+	
+}

@@ -1,0 +1,116 @@
+package Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+
+/**
+ * 集合的输出（迭代）
+ * @author yangzixi
+ *
+ */
+public class Test76_Iterator {
+
+	//断言接口
+	private static void predicate(){
+		List<String> list = Arrays.asList("Larry","mioamiao","yang","tim");
+		List<String> result = filter(list,(s)->s.contains("L"));
+		result.forEach(System.out::println);
+	}
+	private static List<String> filter(List<String> list,Predicate<String> p){
+		List<String> result  = new ArrayList<>();
+		for(String s:list) {
+			if(p.test(s)) {//测试是否符合要求
+				result.add(s);
+			}
+		}
+		return result;
+	}
+	//Supplier接口
+	private static void supperlier() {
+		List<Integer> list = getNums(10,()->(int)(Math.random()*100));
+		list.forEach(System.out::println);
+	}
+	private static List<Integer> getNums(int num,Supplier<Integer> sup){
+		List<Integer> list = new ArrayList<>();
+		for(int i = 0;i<num;i++) {
+			list.add(sup.get());
+		}
+		return list;
+	}
+	//Function接口
+	private static void function() {
+		String s = strToUpp("miaomiao",(str)->str.toUpperCase());
+		System.out.println(s);
+	}
+	public static String strToUpp(String str,Function<String,String> f) {
+		return f.apply(str);
+	}
+	/**
+	 * JDK1.8新的迭代方法
+	 */
+	private static void foreach() {
+		List<String> list = new ArrayList<>();
+		list.add("tom");
+		list.add("tim");
+		list.add("tem");
+		list.add("jonm");
+		
+//		list.forEach((String s)->{System.out.println(s);});
+//		list.forEach(System.out::println);//"::"表示调用方法
+		
+	}
+	private static void enumeration() {
+		Vector<String> vs = new Vector<>();
+		vs.add("tom");
+		vs.add("tim");
+		vs.add("tem");
+		vs.add("jonm");
+		
+		Enumeration<String>es = vs.elements();
+		while(es.hasMoreElements()) {
+			System.out.println(es.nextElement());
+		}
+	}
+	//foreach(1.5后才有)
+	private static void foreach(Collection<Test75_Set_cat> c) {
+		for(Test75_Set_cat cat :c) {
+			System.out.println(cat);
+		}
+	}
+	
+	//Iterator(1.5之前统一的迭代集合方式)
+	private static void iterator(Collection<Test75_Set_cat> c) {
+		Iterator<Test75_Set_cat> iter= c.iterator();
+		while(iter.hasNext()) {
+			System.out.println(iter.next());
+		}
+	}
+	public static void main(String[] args) {
+		List<Test75_Set_cat> list = new ArrayList<>();
+		Test75_Set_cat c1 = new Test75_Set_cat("miaomiao",5,1);
+		Test75_Set_cat c2 = new Test75_Set_cat("huahua",2,2);
+		Test75_Set_cat c3 = new Test75_Set_cat("tom",5,3);
+		Test75_Set_cat c4 = new Test75_Set_cat("miaomiao",5,1);
+		list.add(c1);
+		list.add(c2);
+		list.add(c3);
+		list.add(c4);
+//		foreach(list);
+		iterator(list);
+//		enumeration();
+//		foreach();
+//		function();
+//		supperlier();
+//		predicate();
+	}
+
+}
+

@@ -1,0 +1,56 @@
+package Test;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+/**
+ * Stream接口：
+ * 1、本身不是存储的数据结构，数据源可以是一个集合，为了函数式编程创造
+ * 2、惰性执行（懒汉式），数据只能被消费一次
+ * 
+ * 两种类型的操作方法：
+ * 1、中间操作（生成一个Stream）
+ * 2、结束操作（执行计算操作）
+ * @author yangzixi
+ *
+ */
+public class Test77_Stream {
+
+	public static void main(String[] args) {
+		
+		//foreach方法(结束操作)
+		Stream<String> stream = Stream.of("good","good","study","day","day","up");
+//		stream.forEach((str)->System.out.println(str));
+//		stream.forEach(System.out::println);
+		
+		//filter(查找长度大于指定数)（中间操作）
+//		stream.filter((s)->s.length()>3).forEach(System.out::println);
+		
+		//distinct（删除重复）
+//		stream.distinct().forEach(s->System.out.println(s));
+		
+		//map(映射)
+//		stream.map(s->s.toUpperCase()).forEach(System.out::println);
+		
+		//flatMap(连接集合)
+//		Stream<List<Integer>> ss = Stream.of(Arrays.asList(1,2,3),Arrays.asList(4,5));
+//		ss.flatMap(list->list.stream()).forEach(System.out::println);
+		
+		//reduce	
+//		Optional<String> opt = stream.reduce((s1,s2)->s1.length()>=s2.length()?s1:s2);
+//		System.out.println(opt.get());
+		
+		//collect(根据流生成不同集合)
+		List<String> list = stream.collect(Collectors.toList());
+		list.forEach(s->System.out.println(s));
+		
+		// "::"方法的引用
+		//引用静态方法 	Integer::valueof
+		//引用对象的方法 	list::add
+		//引用构造方法 	ArrayList::new
+	}
+
+}
+

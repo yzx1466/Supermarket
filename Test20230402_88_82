@@ -1,0 +1,64 @@
+package Test;
+
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+
+/**
+ * Queue接口：队列是一种先进先出的线性数据结构（排队）
+ * LinkedList类实现了Queue接口
+ * 请求队列、消息队列、任务栏
+ * 
+ * Deque接口：双端队列
+ * Stack：堆栈:先进后出
+ * @author yangzixi
+ *
+ */
+public class Test82_QueueDeque {
+
+	private static void stack() {
+		Stack s = new Stack();
+		s.push("Bin");
+		s.push("tom");
+		s.push("lily");
+		
+//		System.out.println(s.peek());
+		System.out.println(s.pop());
+		System.out.println(s.pop());
+		System.out.println(s.pop());
+		
+	}
+	private static void deque() {
+		Deque<String> deque = new LinkedList<>();
+		deque.add("小花");
+		deque.add("小人");
+		deque.add("小红");
+		deque.add("小百");
+		deque.add("小嘿");
+		
+		System.out.println(deque.getFirst());
+		System.out.println(deque.getLast());
+	}
+	private static void queue() {
+		Queue<String> queue = new LinkedList<>(); 
+		queue.add("小花");
+		queue.add("小人");
+		queue.add("小红");
+		queue.add("小百");
+		queue.add("小嘿");
+		
+		System.out.println(queue.size());
+		System.out.println(queue.peek());
+		System.out.println(queue.size());
+		System.out.println(queue.poll());
+		System.out.println(queue.size());
+	}
+	public static void main(String[] args) {
+//		queue();
+//		deque();
+		stack();
+	}
+
+}
+

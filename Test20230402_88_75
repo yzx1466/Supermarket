@@ -1,0 +1,205 @@
+package Test;
+
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.TreeSet;
+
+/**
+ * Set接口
+ * 1、无序性（不保证顺序）
+ * 2、不允许重复元素
+ * 3、HashSet、TreeSet、LinkedHashSet
+ * 
+ * 如果要排序，选择treeSet
+ * 如果不排序，也不用保证顺序，选择HashSet
+ * 不要排序，要保证顺序，选择LinkedHashSet
+ * @author yangzixi
+ *
+ */
+public class Test75_Set {
+
+	/**
+	 * 哈希表和链接列表实现
+	 */
+	private static void LinkedHashSet() {
+		LinkedHashSet<Test75_Set_cat> set = new LinkedHashSet<>();
+
+		Test75_Set_cat c1 = new Test75_Set_cat("miaomiao",5,1);
+		Test75_Set_cat c2 = new Test75_Set_cat("huahua",2,2);
+		Test75_Set_cat c3 = new Test75_Set_cat("tom",5,3);
+		Test75_Set_cat c4 = new Test75_Set_cat("miaomiao",3,1);
+		set.add(c1);
+		set.add(c2);
+		set.add(c3);
+		set.add(c4);
+		for(Test75_Set_cat c:set) {
+			System.out.println(c);
+		}
+	}
+	/**
+	 * 有序的,基于TreeMap（二叉树的数据结构），对象需要比较大小，通过对象比较器来实现，
+	 * 对象比较器还可以用来除去重复元素，如果自定义的数据类没有实现比较器接口，将无法添加到TreeSet集合中。
+	 */
+	private static void TreeSet() {
+		TreeSet<Test75_Set_cat> tree = new TreeSet<>(new Test75_CatComparator());
+		Test75_Set_cat c1 = new Test75_Set_cat("miaomiao",5,1);
+		Test75_Set_cat c2 = new Test75_Set_cat("huahua",2,2);
+		Test75_Set_cat c3 = new Test75_Set_cat("tom",5,3);
+		Test75_Set_cat c4 = new Test75_Set_cat("miaomiao",3,1);
+		tree.add(c1);
+		tree.add(c2);
+		tree.add(c3);
+		tree.add(c4);
+		System.out.println(tree.size());
+		
+		for(Test75_Set_cat c:tree) {
+			System.out.println(c);
+		}
+		
+		
+	}
+	/**
+	 * HashSet
+	 * 1、实现原理：基于哈希表（HashMap）实现
+	 * 2、不允许重复，可以有一个null元素
+	 * 3、不保证顺序（恒久不变）
+	 * 4、添加元素时把元素作为HashMap的key存储，HashMap的value使用一个固定的object对象
+	 * 5、排除重复元素，是通过equals来检查对象是否相同
+	 * 6、判断两个对象是否相同，先判断两个对象的hashCode是否相同（如果两个对象的hashCode相同，不一定是同一个对象，如果不同，那一定不是
+	 * 同一个对象），如果不同，则两个对象不是同一个对象，如果相同，还要进行equals判断，equals相同则是同一个对象，不同则不是同一个对象。
+	 * 7、自定义对象要认为属性值都相同时为同一个对象，有这种需求时，那么我们要重写对象所在类的hashCode和equals方法
+	 * 
+	 * 小结：
+	 * （1）哈希表的存储结构：数组+链表，数组里面的每个元素以链表的形式存储
+	 * （2）如何把对象存储在哈希表中，先计算对象的hashCode值，再对数组的长度求余数，来决定对象要存储在数组中的哪个位置
+	 * （3）解决hashCode中的重复值使用的方式是，参考第6点
+	 */
+	private static void hashSet() {
+		Set<String> set = new HashSet<>();
+		set.add("飞飞");
+		set.add("备备");
+		set.add("曹操");
+		set.add("关关");
+		set.add("熙熙");
+		set.add("曹操");
+		System.out.println(set.size());
+		String[] names = set.toArray(new String[]{});
+		for(String s : names) {
+			System.out.println(s);
+		}
+		
+		Test75_Set_cat c1 = new Test75_Set_cat("miaomiao",5,1);
+		Test75_Set_cat c2 = new Test75_Set_cat("huahua",2,2);
+		Test75_Set_cat c3 = new Test75_Set_cat("tom",5,3);
+		Test75_Set_cat c4 = new Test75_Set_cat("miaomiao",5,1);
+		Set<Test75_Set_cat> cats = new HashSet<>();
+		cats.add(c1);
+		cats.add(c2);
+		cats.add(c3);
+		cats.add(c4);
+		System.out.println(cats.size());
+		
+		for(Test75_Set_cat c:cats) {
+			System.out.println(c);
+		}
+		System.out.println("c1="+c1.hashCode());
+		System.out.println("c2="+c2.hashCode());
+		System.out.println("c3="+c3.hashCode());
+		System.out.println("c4="+c4.hashCode());
+
+		
+	}
+	public static void main(String[] args) {
+		hashSet();
+		System.out.println("------");
+		TreeSet();
+		System.out.println("------");
+		LinkedHashSet();
+	}
+
+}
+--------------------------------------------------------------
+package Test;
+
+public class Test75_Set_cat {
+
+	private String name;
+	private int age;
+	private int id;
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	@Override
+	public String toString() {
+		return "Test75_Set_cat [name=" + name + ", age=" + age + ", id=" + id + "]";
+	}
+	public Test75_Set_cat(String name, int age, int id) {
+		super();
+		this.name = name;
+		this.age = age;
+		this.id = id;
+	}
+	public Test75_Set_cat() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;//系数 31*1+age *31+id 
+		int result = 1;
+		result = prime * result + age;
+		result = prime * result + id;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Test75_Set_cat other = (Test75_Set_cat) obj;
+		if (age != other.age)
+			return false;
+		if (id != other.id)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+	
+}
+-------------------------------------------------------------
+package Test;
+
+import java.util.Comparator;
+
+public class Test75_CatComparator  implements Comparator<Test75_Set_cat>{
+
+	@Override
+	public int compare(Test75_Set_cat o1, Test75_Set_cat o2) {
+		return o1.getId()-o2.getId();
+	}
+}
+

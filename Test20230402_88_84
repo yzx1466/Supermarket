@@ -1,0 +1,116 @@
+package Test;
+
+public class Test84 {
+
+	public static void main(String[] args) {
+		Test84_MyList list = new Test84_ConcreteAggregate();
+		list.add("刘备");
+		list.add("张飞");
+		list.add("关羽");
+		list.add("曹操");
+		list.add("诸葛孔明");
+		Test84_Iterator iter = list.iterator();
+		while(iter.hasNext()) {
+			System.out.println(iter.next());
+		}
+	}
+
+}
+--------------------------------------------------------
+package Test;
+
+/**
+ * 容器的接口
+ * @author yangzixi
+ *
+ */
+public interface Test84_MyList {
+
+	void add(Object e);
+	Object get(int index);
+	Test84_Iterator iterator();
+	int getSize();
+}
+----------------------------------------
+package Test;
+/**
+ * 容器接口的具体实现类
+ * @author yangzixi
+ *
+ */
+public class Test84_ConcreteAggregate implements Test84_MyList{
+
+	private Object[] elements;//对象数组
+	private int size;
+	private int index;
+	public Test84_ConcreteAggregate() {
+		elements = new Object[100];
+	}
+	@Override
+	public void add(Object e) {
+		elements[index++]=e;	
+		size++;
+	}
+
+	@Override
+	public Object get(int index) {
+		return elements[index];
+	}
+
+	@Override
+	public Test84_Iterator iterator() {
+		return new Test84_ConcreteIterator(this);
+	}
+
+	@Override
+	public int getSize() {
+		return size;
+	}
+
+	
+}
+---------------------------------------------------------
+package Test;
+
+/**
+ * 迭代器的接口
+ * @author yangzixi
+ *
+ */
+public interface Test84_Iterator {
+
+	public boolean hasNext();
+	public Object next();
+}
+---------------------------------------------------------
+package Test;
+
+
+/**
+ * 迭代器接口的具体实现类
+ * @author yangzixi
+ *
+ */
+public class Test84_ConcreteIterator implements Test84_Iterator{
+	
+	private Test84_MyList list = null;
+	private int index;//迭代器的下标/指针位置（索引位置）
+	public Test84_ConcreteIterator(Test84_MyList list) {
+		this.list = list;
+	}
+	@Override
+	public boolean hasNext() {
+		if(index>=list.getSize())
+			return false;
+		else return true;
+	}
+
+	@Override
+	public Object next() {
+		Object obj = list.get(index);
+		index++;
+		return obj;
+	}
+
+}
+
