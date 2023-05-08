@@ -1,0 +1,247 @@
+package Test;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class Test94_Client {
+
+	public static void main(String[] args) {
+		Scanner input = new Scanner(System.in);
+		//创建一个线程池
+		ExecutorService es = Executors.newSingleThreadExecutor();
+		try {
+			Socket socket = new Socket("localhost",8888);
+			System.out.println("服务器连接成功");
+			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			//向服务器发送登陆信息
+			System.out.println("请输入名称：");
+			String name = input.next();
+			//登陆条件（从哪里开始，到哪里，类型，要说什么话）
+			Test94_Message msg = new Test94_Message(name, null, Test94_MessageType.TYPE_LOGIN, null);
+			oos.writeObject(msg);
+			msg = (Test94_Message)ois.readObject();
+			System.out.println(msg.getInfo()+msg.getFrom());
+			//启动读取消息的线程
+			es.execute(new ReadInfoThread(ois));
+			//使用主线程来发送信息
+			boolean flag = true;
+			while(flag) {
+				msg = new Test94_Message();
+				System.out.println("To:");
+				msg.setTo(input.next());
+				msg.setFrom(name);
+				msg.setType(Test94_MessageType.TYPE_SEND);
+				System.out.println("Info:");
+				msg.setInfo(input.next());
+				oos.writeObject(msg);
+			}
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+class ReadInfoThread implements Runnable{
+	private ObjectInputStream in;
+	
+	public ReadInfoThread(ObjectInputStream in) {
+		this.in = in;
+	}
+	private boolean flag = true;
+	public void setFlag(boolean flag) {
+		this.flag = flag;
+	}
+	@Override
+	public void run() {
+		try {
+			while(flag) {
+			
+				Test94_Message message = (Test94_Message)in.readObject();
+				System.out.println("["+message.getFrom()+"]对我说："+message.getInfo());
+			}
+			if(in!=null) {
+				in.close();
+			}
+		}catch(IOException | ClassNotFoundException e){
+			e.printStackTrace();
+		}
+				
+	}
+	
+}
+---------------------------------------------------------------------
+package Test;
+
+import java.io.Serializable;
+
+/**
+ * 消息包
+ * @author yangzixi
+ *
+ */
+public class Test94_Message implements Serializable {
+	private String from;//发送者
+	private String to;//接收者
+	private int type;//消息类型
+	private String info;//消息
+	public String getFrom() {
+		return from;
+	}
+	public void setFrom(String from) {
+		this.from = from;
+	}
+	public String getTo() {
+		return to;
+	}
+	public void setTo(String to) {
+		this.to = to;
+	}
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
+	}
+	public String getInfo() {
+		return info;
+	}
+	public void setInfo(String info) {
+		this.info = info;
+	}
+	@Override
+	public String toString() {
+		return "Test94_Message [from=" + from + ", to=" + to + ", type=" + type + ", info=" + info + "]";
+	}
+	public Test94_Message(String from, String to, int type, String info) {
+		super();
+		this.from = from;
+		this.to = to;
+		this.type = type;
+		this.info = info;
+	}
+	public Test94_Message() {
+		super();
+	}
+
+}
+----------------------------------------------------------------
+package Test;
+
+public final class Test94_MessageType {
+
+	public static final int TYPE_LOGIN = 0x1;//登陆信息类型
+	public static final int TYPE_SEND = 0x2;//发送信息类型SE
+
+}
+----------------------------------------------------------------
+package Test;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Vector;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+
+/**
+ * 服务器端
+ * @author yangzixi
+ *
+ */
+public class Test94_Server {
+
+	public static void main(String[] args) {
+		//保存客户端处理的线程
+		Vector<UserThread1> vector = new Vector<>(); 
+		//线程池
+		ExecutorService es = Executors.newFixedThreadPool(5);
+		//创建服务器端的Socket
+		try {
+			ServerSocket server = new ServerSocket(8888);
+			System.out.println("服务器已启动，正在等待连接。。。");
+			while(true) {
+				Socket socket = server.accept();
+				UserThread1 user = new UserThread1(socket,vector);
+				es.execute(user);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+//客户端处理的线程
+
+class UserThread1 implements Runnable{
+	private String name;//客户端的用户名（唯一）
+	private Socket s;
+	Vector<UserThread1> vector;//客户端处理线程的集合
+	private ObjectInputStream ois;
+	private ObjectOutputStream oos;
+	private boolean flag = true;
+	public UserThread1(Socket s,Vector<UserThread1> vector) {
+		this.s = s;
+		this.vector = vector;
+		vector.add(this);//将当前对象添加到线程中
+	}
+	
+	@Override
+	public void run() {
+		try {
+			System.out.println("客户端"+s.getInetAddress().getHostAddress()+"已连接");
+			oos = new ObjectOutputStream(s.getOutputStream());
+			ois = new ObjectInputStream(s.getInputStream());
+			
+			while(flag) {
+				//读取消息对象
+				Test94_Message msg = (Test94_Message)ois.readObject();
+				int type = msg.getType();
+				switch (type) {
+					case Test94_MessageType.TYPE_SEND:
+						String to = msg.getTo();
+						UserThread1 ut;
+						int size = vector.size();
+						for (int i = 0; i < size; i++) {
+							ut = vector.get(i);
+							if(to.equals(ut.name) && ut != this) {
+								ut.oos.writeObject(msg);
+								break;
+							}
+						}
+						break;
+					case Test94_MessageType.TYPE_LOGIN:
+						name = msg.getFrom();
+						msg.setInfo("欢迎老逼灯：");
+						oos.writeObject(msg);
+						break;	
+				}
+			}
+			
+		}catch(IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				ois.close();
+				oos.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}		
+	}
+	
+}

@@ -1,0 +1,38 @@
+package Test;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+public class Test96_URL {
+
+	public static void main(String[] args) {
+		//URL统一资源定位符
+		try {
+			URL url = new URL("https://tse1-mm.cn.bing.net/th/id/OIP-C.B9v-Y1zYmTfoJMuoanVIbAHaE8?pid=ImgDet&rs=1.jpg");
+			//openConnection()下载图片
+			HttpURLConnection conn = (HttpURLConnection)url.openConnection();//强制转换，使用HTTP的子类进行转换openConnection()下载图片
+			BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
+			BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream("/Users/yangzixi/yang/fj.jpg"));
+			byte[] bytes = new byte[1024];
+			int len = -1;
+			while((len = bis.read(bytes))!=-1) {
+				bos.write(bytes,0,len);
+				bos.flush();
+			}
+			bis.close();
+			bos.close();
+			System.out.println("下载成功");
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+

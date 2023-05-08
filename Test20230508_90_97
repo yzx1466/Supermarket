@@ -1,0 +1,196 @@
+package Test;
+
+import java.net.InetSocketAddress;
+import java.util.Scanner;
+
+import org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder;
+import org.apache.mina.core.future.ConnectFuture;
+import org.apache.mina.filter.codec.ProtocolCodecFilter;
+import org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory;
+import org.apache.mina.transport.socket.nio.NioSocketConnector;
+
+
+
+
+public class Test97_Client {
+
+	public static void main(String[] args) {
+		//先创建连接
+		NioSocketConnector connector = new NioSocketConnector();
+		DefaultIoFilterChainBuilder chain = connector.getFilterChain();
+//		chain.addLast("mychain", new ProtocolCodecFilter(new TextLineCodecFactory()));
+		//设定过滤器以对象为单位来读取数据
+		chain.addLast("objectFilter",new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));
+		connector.setHandler(new Test97_MinaClientHandler());
+		connector.setConnectTimeoutMillis(1000);
+		//连接服务器
+		ConnectFuture cf = connector.connect(new InetSocketAddress("localhost",9998));
+		cf.awaitUninterruptibly();//等待连接成功
+		Scanner input = new Scanner(System.in);
+		while(true) {
+//			System.out.println("请输入：");
+//			String info = input.nextLine();
+//			cf.getSession().write(info);
+			
+			Test97_Message msg = new Test97_Message();
+			System.out.println("from");
+			msg.setFrom(input.nextLine());
+			System.out.println("to");
+			msg.setTo(input.nextLine());
+			System.out.println("info");
+			msg.setInfo(input.nextLine());
+			msg.setType("send");
+			
+			cf.getSession().write(msg);
+		}
+		//等待服务器连接关闭，结束长连接
+//		cf.getSession().getCloseFuture().awaitUninterruptibly();
+//		connector.dispose();//关闭连接
+	}
+
+}
+--------------------------------------------------------------------
+package Test;
+
+import java.io.Serializable;
+
+public class Test97_Message implements Serializable{
+
+	@Override
+	public String toString() {
+		return "Test97_Message [from=" + from + ", to=" + to + ", type=" + type + ", info=" + info + "]";
+	}
+	private String from;
+	private String to;
+	private String type;
+	private String info;
+	public String getFrom() {
+		return from;
+	}
+	public void setFrom(String from) {
+		this.from = from;
+	}
+	public String getTo() {
+		return to;
+	}
+	public void setTo(String to) {
+		this.to = to;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public String getInfo() {
+		return info;
+	}
+	public void setInfo(String info) {
+		this.info = info;
+	}
+	
+	
+
+}
+----------------------------------------------------------------
+package Test;
+
+import org.apache.mina.core.service.IoHandlerAdapter;
+import org.apache.mina.core.session.IoSession;
+
+public class Test97_MinaClientHandler extends IoHandlerAdapter{
+
+	@Override
+	public void sessionOpened(IoSession session) throws Exception {
+		// TODO Auto-generated method stub
+		super.sessionOpened(session);
+		System.out.println("sessionOpened");
+	}
+	@Override
+	public void sessionClosed(IoSession session) throws Exception {
+		// TODO Auto-generated method stub
+		super.sessionClosed(session);
+		System.out.println("sessionClosed");
+	}
+	@Override
+	public void messageReceived(IoSession session, Object message) throws Exception {
+		// TODO Auto-generated method stub
+		super.messageReceived(session, message);
+//		String msg = (String) message;
+		Test97_Message msg = (Test97_Message)message;
+		System.out.println(msg);
+	}
+
+}
+----------------------------------------------------------------
+package Test;
+
+import org.apache.mina.core.service.IoHandlerAdapter;
+import org.apache.mina.core.session.IoSession;
+
+/**
+ * 服务器端的消息处理器
+ * @author yangzixi
+ *
+ */
+public class Test97_MinaServerHandler extends IoHandlerAdapter{
+	//一次会话被打开
+	public void sessionOpened(IoSession session) throws Exception{
+		super.sessionOpened(session);
+		System.out.println("welcome client"+session.getRemoteAddress());//客户端的地址连接clicls
+	}
+	//会话关闭
+	public void sessionClosed(IoSession session) throws Exception{
+		super.sessionClosed(session);
+		System.out.println("client closed");
+	}
+	//接收消息的方法
+	public void messageReceived(IoSession session,Object message) throws Exception{
+		super.messageReceived(session,message);
+//		String msg = (String)message;//接收到的消息对象
+		Test97_Message msg = (Test97_Message)message;
+		
+		System.out.println("收到客户端发来的消息"+msg);
+		msg.setInfo("吃好吃的");
+		//向客户端发送消息对象
+		session.write(msg);
+	}
+
+}
+--------------------------------------------------------------
+package Test;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+
+import org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder;
+import org.apache.mina.filter.codec.ProtocolCodecFilter;
+import org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory;
+import org.apache.mina.transport.socket.SocketAcceptor;
+import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
+
+
+public class Test97_Server {
+
+	public static void main(String[] args) {
+		
+		//创建一个非阻塞的Server端Socket NIO
+		SocketAcceptor acceptor = new NioSocketAcceptor();
+		DefaultIoFilterChainBuilder chain = acceptor.getFilterChain();
+		//设定一个过滤器，一行一行的读取数据（/r/n）
+//		chain.addLast("mychain", new ProtocolCodecFilter(new TextLineCodecFactory()));
+		//设定过滤器以对象为单位来读取数据
+		chain.addLast("objectFilter",new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));
+		//设定服务器端的消息处理器
+		acceptor.setHandler(new Test97_MinaServerHandler());
+		int port = 9998;//服务器的端口号
+		try {
+			//绑定端口，启动服务器(不会堵塞，立即返回)
+			acceptor.bind(new InetSocketAddress(port));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Mina Server running,Listener on :"+port);
+	}
+
+}

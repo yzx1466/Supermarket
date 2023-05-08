@@ -1,0 +1,69 @@
+package Test;
+
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.SocketException;
+
+public class Test95_UDPClient {
+
+	public static void main(String[] args) {
+		byte[] bytes = new byte[1024];
+		DatagramPacket dp = new DatagramPacket(bytes, bytes.length);
+		try {
+			DatagramSocket socket = new DatagramSocket(8000);
+			System.out.println("正在接收数据中.....");
+			socket.receive(dp);//接收数据
+			String s = new String(dp.getData(),0,dp.getLength());
+			System.out.println(s);
+			socket.close();
+		} catch (SocketException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+
+}
+--------------------------------------------------------------
+package Test;
+
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+
+public class Test95_UDPServer {
+
+	public static void main(String[] args) {
+		String info = "good good 学习,天天 up";
+		byte[] bytes = info.getBytes();
+		try {
+			//封装一个数据报包
+			/**
+			 *buf - 分组数据。
+			 *offset - 分组数据偏移量。
+			 *length - 分组数据长度。
+			 *address - 目的地址。
+			 *port - 目标端口号。 
+			 */
+			DatagramPacket dp = new DatagramPacket(bytes, 0,bytes.length,InetAddress.getByName("0.0.0.0"),8000);
+			//本程序的端口号
+			DatagramSocket socket  = new DatagramSocket(9000);//别人发给我就发9000的端口号，而我发给别人就发8000的端口号
+			socket.send(dp);//发送
+			socket.close();
+		}catch(UnknownHostException e) {
+			e.printStackTrace();
+		} catch (SocketException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+
