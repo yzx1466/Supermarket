@@ -1,0 +1,10 @@
+package Test;
+
+public enum Test108_Singleton {
+
+	SINGLETON;
+	public void method() {
+		System.out.println("method");
+	}
+}
+

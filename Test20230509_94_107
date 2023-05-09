@@ -1,0 +1,116 @@
+package Test;
+/**
+ * 定义一个枚举类型（与class和implements[类和接口]是同级别的）
+ * @author yangzixi
+ *
+ */
+public enum Test107_Color implements Test107_Info{
+
+	RED(10) {
+		@Override
+		public String getColor2() {
+			return "red";
+		}
+	},GREEN(20) {
+		@Override
+		public String getColor2() {
+			return "green";
+		}
+	},BLUE {
+		@Override
+		public String getColor2() {
+			return "blue";
+		}
+	};
+	private int color;
+	private Test107_Color() {
+		System.out.println("无参构造器");
+	}
+	private Test107_Color(int color){
+		this.color = color;
+		System.out.println("有参构造器");
+	}
+	@Override
+	public int getColor() {
+		return color;
+	}
+
+	public abstract String getColor2();
+}
+----------------------------------------------------------------
+package Test;
+
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.EnumSet;
+
+import org.junit.Test;
+/**
+ * 
+ * @author yangzixi
+ *
+ */
+public class Test107_Enum {
+
+	public static final int RED = 0x1;
+	public static final int GREEN = 0x2;
+	public static final int BLUE = 0x3;
+	
+	public int color;
+	@Test
+	public void test1() {
+		color = RED;
+		color = 4;
+		System.out.println(color);
+	}
+	
+	public Test107_Color colorEnum;
+	@Test
+	public void test2() {
+		colorEnum = Test107_Color.RED;
+		colorEnum = Test107_Color.BLUE;
+		colorEnum = Test107_Color.GREEN;
+		System.out.println(colorEnum.name());
+		System.out.println(colorEnum.ordinal());//序号编号
+		System.out.println(colorEnum.toString());
+		Test107_Color[] cs = Test107_Color.values();
+		System.out.println(Arrays.toString(cs));
+//		colorEnum = 4;//会报错，原因：colorEnum是一个枚举类型，已被限定范围在[RED,GREEN,BLUE],其他都不能被调用
+	
+	}	
+	@Test
+	public void test3() {
+		//
+		EnumSet<Test107_Color> set = EnumSet.allOf(Test107_Color.class);
+		for (Test107_Color color : set) {
+			System.out.println(color);
+		}
+		
+		EnumMap<Test107_Color, String> map = new EnumMap<>(Test107_Color.class);
+		map.put(Test107_Color.RED,"red");
+		map.put(Test107_Color.BLUE,"blue");
+		map.put(Test107_Color.GREEN,"green");
+		
+		System.out.println(map);
+	}
+	
+	@Test
+	public void test4() {
+		System.out.println(Test107_Color.RED.getColor());
+		System.out.println(Test107_Color.RED.getColor2());
+	}
+	
+	@Test
+	//使用枚举实现单例设计模式
+	public void test5() {
+		Test108_Singleton.SINGLETON.method();
+	}
+}
+---------------------------------------------------------------------
+package Test;
+
+public interface Test107_Info {
+
+	public int getColor();
+}
+
