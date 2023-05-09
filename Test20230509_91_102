@@ -1,0 +1,215 @@
+package Test;
+
+
+/**
+ * 通知
+ * @author yangzixi
+ *
+ */
+public interface Test102_Advice {
+	public void beforeAdvice();
+	public void afterAdvice();
+}
+----------------------------------------------------------------
+package Test;
+
+import java.io.InputStream;
+
+import org.junit.Test;
+import org.springframework.beans.factory.BeanFactory;
+/**
+ * AOP框架的简单实现
+ * 
+ * @author yangzixi
+ *
+ */
+public class Test102_AOPTest {
+	@Test
+	public void test() {
+		//读取配置文件
+		InputStream in = Thread.currentThread().getContextClassLoader()
+		.getResourceAsStream("Test/bean.properties");
+		//创建bean的工厂对象
+		Test102_BeanFactory beanFactory = new Test102_BeanFactory(in);
+		//获取代理对象
+		Test102_ProxyFactoryBean proxyFactoryBean = (Test102_ProxyFactoryBean)beanFactory.getBean("bean");
+		Test102_IManager proxy = (Test102_IManager) proxyFactoryBean.getProxy();
+		proxy.add("我是一只猫");
+	}
+}
+-----------------------------------------------------------------
+package Test;
+
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Properties;
+/**
+ * 完成从配置文件中读取内容，完成ProxyFactoryBean对象的创建与属性的赋值
+ * @author yangzixi
+ *
+ */
+
+public class Test102_BeanFactory {
+
+	Properties prop = new Properties();
+	public Test102_BeanFactory(InputStream in) {
+		try {
+			prop.load(in);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	//获取一个Bean实例
+	public Object getBean(String name) {
+		String className = prop.getProperty(name);
+		Object bean = null;
+		try {
+			//获取ProxyFactoryBean的class对象
+			Class<?> aClass = Class.forName(className);
+			//实例化对象
+			bean = aClass.newInstance();
+			//根据配置文件实例化target和advice对象
+			Object target = Class.forName(prop.getProperty(name+".target")).newInstance();
+			Object advice = Class.forName(prop.getProperty(name+".advice")).newInstance();
+			//通过内省实现对ProxyFactoryBean的属性赋值
+			BeanInfo beaninfo = Introspector.getBeanInfo(aClass);
+			//使用属性描述器
+			PropertyDescriptor[] propertyDescriptors = beaninfo.getPropertyDescriptors();
+			for(PropertyDescriptor pd:propertyDescriptors) {
+				String propertyName = pd.getName();
+				Method writerMethod = pd.getWriteMethod();
+				if("target".equals(propertyName)) {
+					writerMethod.invoke(bean, target);
+				}else if("advice".equals(propertyName)) {
+					writerMethod.invoke(bean, advice);
+				}
+			}
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IntrospectionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return bean;
+		
+	}
+}
+-------------------------------------------------------------------
+package Test;
+
+public interface Test102_IManager {
+
+	public void add(String item);
+}
+------------------------------------------------------------------
+package Test;
+
+import java.util.ArrayList;
+
+public class Test102_ImanagerImpl implements Test102_IManager{
+
+	private ArrayList<String> list = new ArrayList<>();
+	@Override
+	public void add(String item) {
+//		System.out.println("add start"+System.currentTimeMillis());
+		list.add(item);	
+		System.out.println(item);
+//		System.out.println("add end"+System.currentTimeMillis());
+	}
+
+	
+}
+-----------------------------------------------------------------
+package Test;
+
+
+
+public class Test102_LogAdvice implements Test102_Advice{
+
+	@Override
+	public void beforeAdvice() {
+		// TODO Auto-generated method stub
+		System.out.println("start time:"+System.currentTimeMillis());
+	}
+
+	@Override
+	public void afterAdvice() {
+		// TODO Auto-generated method stub
+		System.out.println("end time:"+System.currentTimeMillis());
+	}
+
+	
+	
+}
+--------------------------------------------------------------
+package Test;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
+import org.aopalliance.aop.Advice;
+
+
+
+
+
+public class Test102_ProxyFactoryBean implements InvocationHandler{
+	//被代理对象
+	private Object target;
+	//切面，要干什么事情
+	private Test102_Advice advice;
+	
+	public Object getProxy() {
+		Object proxy = Proxy.newProxyInstance(target.getClass().getClassLoader()
+				,target.getClass().getInterfaces(),this);
+		return proxy;
+		
+	}
+	//执行核心业务的方法
+	@Override
+	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+		advice.beforeAdvice();
+		Object obj = method.invoke(target, args);
+		advice.afterAdvice();
+		return obj;
+	}
+	public Object getTarget() {
+		return target;
+	}
+	public void setTarget(Object target) {
+		this.target = target;
+	}
+	public Test102_Advice getAdvice() {
+		return advice;
+	}
+	public void setAdvice(Test102_Advice advice) {
+		this.advice = advice;
+	}
+	
+	
+	
+}
+---------------------------------------------------------------
+bean.target = Test.Test102_ImanagerImpl
+bean.advice = Test.Test102_LogAdvice
+bean = Test.Test102_ProxyFactoryBean

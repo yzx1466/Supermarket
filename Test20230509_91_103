@@ -1,0 +1,36 @@
+package Test;
+
+import java.io.Serializable;
+
+/**
+ * 单例设计模式
+ * 1、多线程访问的安全问题
+ * 2、加上volatile关键字保证变量的一致性
+ * 3、防止反射调用私有化方法
+ * 4、让单例类可以被序列化
+ * @author yangzixi
+ *
+ */
+public class Test103_Singleton implements Serializable{
+
+	private volatile static Test103_Singleton singleton = null;
+	private Test103_Singleton() {
+		if(singleton != null) {
+			throw new RuntimeException("此类对象为单例模式，已经被实例化了");
+		}
+	}
+	
+	
+	public static Test103_Singleton getInstance(){
+		if(singleton == null) {
+			synchronized (Test103_Singleton.class) {
+				if(singleton == null) {
+					singleton = new Test103_Singleton();
+				}
+			}
+		}
+		return singleton;
+		
+	}
+}
+

@@ -1,0 +1,65 @@
+package Test;
+
+import java.lang.reflect.InvocationTargetException;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.junit.Test;
+
+public class Test100_BeanTest {
+
+	@Test
+	public void test() {
+		//从客户端获取到的数据是这样的
+		String name = "yang";
+		String age = "18";
+		String salary = "20000";
+		
+		Test100_Emp emp = new Test100_Emp();
+		try {
+			//.setProperty(设置对象, 设置属性, 属性转换)
+			BeanUtils.setProperty(emp, "name", name);
+			BeanUtils.setProperty(emp, "age", age);
+			BeanUtils.setProperty(emp, "salary", salary);
+
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		System.out.println(emp.getInfo());
+	}
+}
+-----------------------------------------------------------------------
+package Test;
+
+public class Test100_Emp {
+	private String name;
+	private int age;
+	private int salary;
+	
+	public String getInfo(){
+		return "name="+name+",age="+age+",salary="+salary;
+	}
+	
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public int getSalary() {
+		return salary;
+	}
+	public void setSalary(int salary) {
+		this.salary = salary;
+	}
+	
+}
+

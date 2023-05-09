@@ -1,0 +1,92 @@
+package Test;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
+/**
+ * 用于动态生成一个代理对象
+ * @author yangzixi
+ *
+ */
+public class Test99_CreateProxy implements InvocationHandler{
+
+	private Object target;//被代理对象
+	//用于创建代理对象的方法
+	public Object create(Object target) {
+		this.target = target;
+		//.newProxyInstance(类加载器，接口，当前类对象);
+		Object proxy = Proxy.newProxyInstance(target.getClass().getClassLoader(), 
+				target.getClass().getInterfaces(),this);
+		return proxy;
+	}
+	/**
+	 * 代理对象要执行的方法
+	 * @param proxy 代理类对象
+	 * @param method 被代理对象的方法
+	 * @param args 被代理对象方法可变参数
+	 * @return
+	 * @throws Throwable
+	 */
+	@Override
+	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+		System.out.println("上海外寻找客户需要的产品。。。。");
+		System.out.println("跟客户确定产品");
+		method.invoke(target, args);
+		System.out.println("完成本次海淘");
+		return null;
+	}
+
+}
+---------------------------------------------------------------------
+package Test;
+
+public interface Test99_Hotel {
+
+	public void reserve();
+}
+--------------------------------------------------------------------
+package Test;
+
+public class Test99_Person implements Test99_Subject,Test99_Hotel{
+
+	@Override
+	public void shopping() {
+		System.out.println("付款，买到心仪的东西");
+	}
+
+	@Override
+	public void reserve() {
+		System.out.println("付预定款，打飞的前往目的地");		
+	}
+
+}
+--------------------------------------------------------------------
+package Test;
+
+public interface Test99_Subject {
+	public void shopping();
+}
+--------------------------------------------------------------------
+package Test;
+
+import javax.security.auth.Subject;
+
+import org.junit.Test;
+
+public class Test99 {
+	@Test
+	public void testProxy() {
+		Test99_CreateProxy cp = new Test99_CreateProxy();//用来创建代理对象的对象
+		//需要Hotel就调用Hotel接口
+		//需要Subject，就调用Subject接口
+		Test99_Hotel person = new Test99_Person();
+		Test99_Hotel proxy = (Test99_Hotel) cp.create(person);
+//		proxy.shopping();//相当于调用invoke方法
+		proxy.reserve();
+		
+	
+	}
+
+}
+

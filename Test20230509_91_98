@@ -1,0 +1,198 @@
+package Test;
+
+public class Test98_Dog {
+	public int type;
+	private String name;
+	private int age;
+	private String color;
+	
+	private void set() {
+		System.out.println("set");
+	}
+	protected void get() {
+		System.out.println("get");
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
+	}
+	@Override
+	public String toString() {
+		return "Test98_Dog [name=" + name + ", age=" + age + ", color=" + color + "]";
+	}
+	public Test98_Dog(String name, int age, String color) {
+		super();
+		this.name = name;
+		this.age = age;
+		this.color = color;
+	}
+	public Test98_Dog() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	
+}
+------------------------------------------------------------------
+package Test;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+
+import org.junit.Test;
+
+public class Test98_Reflection {
+	@Test
+	public void test5() {
+		Test98_Dog dog = new Test98_Dog("wanwan",21,"yellow");
+		Class<Test98_Dog> dogClass = Test98_Dog.class;
+		//获取类的包名
+		Package aPackage = dogClass.getPackage();
+//		System.out.println(aPackage.getName());
+		//获取公共的方法，包括继承的公有方法，私有方法拿不到
+		Method[] methods = dogClass.getMethods();
+		for (int i = 0; i < methods.length; i++) {
+			System.out.println(methods[i]);
+			if(methods[i].getName().equals("toString")) {
+				try {
+					String s = (String) methods[i].invoke(dog);
+					System.out.println(s);
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		System.out.println("------------------------------");
+		//访问私有方法,获取到本类中定义的所有方法（不包括父类）
+		Method[] dMethods = dogClass.getDeclaredMethods();
+		for (int i = 0; i < dMethods.length; i++) {
+			System.out.println(dMethods[i]);
+			if (dMethods[i].getName().equals("set")) {
+				//设置私有方法可以被访问（去除访问修饰符的检查）
+				dMethods[i].setAccessible(true);
+				try {
+					//这样会报错，因为set是私有的，所以无法被识别到，得加上.setAccessible(true)
+					//.invoke(在哪个对象上调用方法，方法中有没有参数/有传/无不传)调用方法
+					dMethods[i].invoke(dog);//没有返回值
+//					System.out.println("set");
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	//获取所有的属性
+	@Test
+	public void test4() {
+		Class<Test98_Dog> dogClass = Test98_Dog.class;
+		//获取属性
+		Field[] fields =dogClass.getFields();
+//		System.out.println(fields.length);//仅仅只能获取非私有属性
+		
+		Field[] declaredFields =  dogClass.getDeclaredFields();//公私合并
+//		System.out.println(declaredFields.length);
+		for (int i = 0; i < declaredFields.length; i++) {
+			int modifiers = declaredFields[i].getModifiers();//.getModifiers()取得修饰符
+			System.out.println(Modifier.toString(modifiers)
+					+"|"+declaredFields[i].getType()
+					+"|"+declaredFields[i].getName());
+		}
+	}
+	//获取所有的构造方法
+	@Test
+	public void test3(){
+		Class<Test98_Dog> dogClass = Test98_Dog.class;
+//		Constructor<?>[] constructors =  dogClass.getConstructors();
+//		for (int i = 0; i < constructors.length; i++) {
+////			System.out.println(constructors[i].getName());
+////			System.out.println(constructors[i].getParameterCount());//构造方法的参数
+//		}	
+		try {
+			//获取一个指定的构造方法
+			Constructor<Test98_Dog> constructor =  dogClass.getConstructor(String.class
+					,int.class,
+					String.class);
+			//调用带参数的构造器来实例化对象
+			Test98_Dog dog = constructor.newInstance("gun",16,"black");
+			System.out.println(dog);
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+	/**
+	 * 通过反射来实例化对象
+	 */
+	@Test
+	public void test2(){
+		Class<Test98_Dog> dogClass = Test98_Dog.class;
+		try {
+			//通过Class对象实例化类对象，调用了默认的无参构造方法
+			Test98_Dog dog = ((Test98_Dog)dogClass.newInstance());
+			System.out.println(dog);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * 获取Class对象的三种形式
+	 */
+	@Test
+	public void test1(){
+		//通过对象的getClass()方法
+		Test98_Dog dog = new Test98_Dog("wawa",4,"red");
+		Class aClass = dog.getClass();
+		
+		//通过类.class
+		Class dogClass = Test98_Dog.class;
+		
+		//通过Class.forName方法
+		try {
+			Class aClass1 = Class.forName("Test.Test98_Dog");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+
+}
+
