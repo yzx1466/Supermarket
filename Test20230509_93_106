@@ -1,0 +1,47 @@
+package Test;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.junit.Test;
+
+public class Test106_Regex {
+
+	@Test
+	public void test3() {
+		String s1 = "5201314";
+		boolean b1 = s1.matches("[0-9]*");
+		//或者
+		boolean b2 = s1.matches("\\d*");
+		System.out.println(b1+"-"+b2);
+	}
+	@Test
+	public void test2() {
+		//创建一个匹配的模版（模式）
+		Pattern p = Pattern.compile("a*b");//a、b都没有含义，*有含义代表多个的意思，在谁后面谁就多个；
+		Matcher m = p.matcher("aaaaab");
+		boolean b = m.matches();
+		System.out.println(b);
+	}
+	/**
+	 * 没有使用正则表达式来检查字符串是否由数字组成
+	 */
+	@Test
+	public void test1() {
+		String s = "520-1314";
+		char[] chars = s.toCharArray();
+		boolean flag = true;
+		for (int i = 0; i < chars.length; i++) {
+			if(chars[i]<'0' || chars[i]>'9') {
+				flag = false;
+				break;
+			}
+		}
+		if(flag) {
+			System.out.println("是由数字组成");
+		}else {
+			System.out.println("不是由数字组成");
+		}
+	}
+}
+
