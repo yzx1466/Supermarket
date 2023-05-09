@@ -1,0 +1,26 @@
+package Test;
+/**
+ * 泛型类
+ * T:参数化类型，在实际使用时才会指定具体的类型
+ * 泛型只作用于编译期检查，在编译后，会被擦除
+ * @author yangzixi
+ *
+ * @param <T>
+ */
+public class Test105_Node<T> {//类型由T决定
+	private T data;
+	public Test105_Node() {}
+	public Test105_Node(T data) {
+		this.data = data;
+	}
+	//泛型的方法
+	public T getData() {
+		return data;
+	}
+	//泛型的方法
+	public void setData(T data) {
+		this.data = data;
+	}
+	
+}
+

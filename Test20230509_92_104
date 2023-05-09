@@ -1,0 +1,109 @@
+package Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.junit.Test;
+
+
+
+public class Test104_Generic {
+	@Test
+	public void test5() {
+		Map<Integer,String> map = new HashMap<>();
+		map.put(1,"vince");
+		map.put(2,"Demon");
+		
+		Set<Map.Entry<Integer,String>> entrySet = map.entrySet();
+		for (Map.Entry entry : entrySet) {
+			System.out.println(entry.getKey()+"->"+entry.getValue());
+		}
+	}
+	
+	@Test
+	public void test4() {
+		String[] arrays = {"vince","jack","Tom","lily"};
+		String[] strs = func(arrays, 0, 1);
+		System.out.println(Arrays.toString(strs));
+		
+	}
+	/**
+	 * 泛型方法
+	 * @param <T>
+	 * @param array
+	 * @param i
+	 * @param t
+	 * @return
+	 */
+	public  static <T> T[] func(T[]array,int i,int t){
+	    T temp = array[i];
+	    array[i] = array[t];
+	    array[t] = temp;
+	    return array;
+	}
+	
+	@Test
+	public void test3() {
+		Test105_Node<Number> n1 = new Test105_Node(81);
+		Test105_Node<Integer> n2 = new Test105_Node(18);
+		Test105_Node<String> n3 = new Test105_Node("Demon");
+		getData(n1);
+//		getData(n2);//报错缘故：getData的泛型类型是Number，而n2的类型是Integer
+		//虽然Number与Integer之间有继承连接关系，但依旧不行
+		//n1 = n2;不支持
+		getData2(n2);
+		getData2(n3);
+		
+		
+		System.out.println("------------------");
+		getUpperNumberData(n1);
+		getUpperNumberData(n2);
+	}
+	public static void getData(Test105_Node<Number> node) {
+		System.out.println(node.getData());
+	}
+	//如果想要全部类型都能够输出，即需要用到通配符"?"
+	/**
+	 * 使用通配符定义泛型的类型，此时只能输出，不能修改[H-32]
+	 * 原因：系统不知道你要什么类型，所以无法帮你修改为你想要的类型
+	 * @param node
+	 */
+	public static void getData2(Test105_Node<?> node) {
+//		node.setData(20);
+		System.out.println(node.getData());
+	}
+	
+	public static void getUpperNumberData(Test105_Node<? extends Number> data){//只能是Number类及其子类
+	    System.out.println("data:"+data.getData());
+	    
+	}
+	
+	@Test
+	public void test2() {
+		Test105_Node<String> stringNode = new Test105_Node("vince");
+		Test105_Node<Integer> intNode = new Test105_Node(18);
+		
+		System.out.println(stringNode.getData());
+		System.out.println(intNode.getData());
+	}
+	
+	@Test	
+	public void test1() {
+		List<String> list = new ArrayList();//= new ArrayList<>();//= new ArrayList<String>();
+		list.add("vince");
+		//list.add(18);
+		//list.add(new Object());
+		
+		for (int i = 0; i < list.size(); i++) {
+			//如果我们不能确定集合中的元素类型，
+			//那我们需要在处理元素时判断元素类型是什么，才能做相应的操作
+			
+		}
+	}
+	
+
+}
