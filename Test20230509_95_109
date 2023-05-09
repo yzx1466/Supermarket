@@ -1,0 +1,158 @@
+package Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Test;
+
+
+
+//消除警告信息
+@SuppressWarnings("all")
+public class Test109_Annotation {
+	//反射处理注解
+	@Test
+	public void test2() {
+		Class<Test109_Cat> catClass = Test109_Cat.class;
+		//获取类上应用的指定注解
+		Test109_MyAnnotation annotation = catClass.getAnnotation(Test109_MyAnnotation.class);
+		//获取注解上变量值
+		String name = annotation.name();
+		int age = annotation.age();
+		String[] like = annotation.like();
+		Test109_Color color = annotation.color();
+		
+	    try {
+			Test109_Cat cat = catClass.newInstance();
+			cat.setName(name);
+			cat.setAge(age);
+			cat.setLike(like);
+			cat.setColor(color);
+			System.out.println(cat);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	public void test() {
+		Test109_Cat cat = new Test109_Cat("cat",5);
+		cat.printInfo();//调用了一个已过时的方法，能用但不建议
+		
+		
+		List list = new ArrayList();
+		list.add("vince");
+		list.add(10);
+		list.add(10.1f);
+	}
+}
+---------------------------------------------------------------
+package Test;
+
+import java.awt.Color;
+import java.util.Arrays;
+
+//没有默认值情况下，有几个类型，设几个值
+@Test109_MyAnnotation( name = "cat",like= {"猫粮"},color = Test109_Color.GREEN)
+//@Test110_MyAnnotation
+public class Test109_Cat {
+
+	private String name;
+	private int age;
+	private Test109_Color color;
+	private String[] like;
+	
+	public String[] getLike() {
+		return like;
+	}
+	public void setLike(String[] like) {
+		this.like = like;
+	}
+	public Test109_Color getColor() {
+		return color;
+	}
+	public void setColor(Test109_Color color) {
+		this.color = color;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	
+	//用于标记方法已过时，不建议使用
+	@Deprecated
+	public String printInfo() {
+		return "Test109_Cat [name=" + name + ", age=" + age + "]";
+	}
+	//用于验证方法是否覆盖父类中的方法
+	@Override
+	public String toString() {
+		return "Test109_Cat [name=" + name + ", age=" + age + ", color=" + color + ""
+				+ ", like=" + Arrays.toString(like)
+				+ "]";
+	}
+	
+	public Test109_Cat(String name, int age) {
+		super();
+		this.name = name;
+		this.age = age;
+	}
+	public Test109_Cat() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	
+	
+}
+----------------------------------------------------------------------
+package Test;
+
+public enum Test109_Color {
+	RED,GREEN,BLUE
+}
+---------------------------------------------------------------------
+package Test;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * 自定义注解
+ * @author yangzixi
+ *
+ */
+//用于生成文档
+@Documented
+
+//表示该注解的作用范围在运行时还存在
+@Retention(RetentionPolicy.RUNTIME)
+
+//用于表示注解的应用范围（类型，方法，属性，构造器，参数，局部变量，包，Annotation）
+@Target(ElementType.TYPE)
+
+//允许被子类继承
+@Inherited
+//default默认值情况下：
+public @interface Test109_MyAnnotation {
+	//定义变量
+	public String name();
+	public int age() default 5;
+	public String[] like();//定义一个数组变量
+	public Test109_Color color();//定义一个枚举类型的变量
+	
+}
+
