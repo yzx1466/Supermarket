@@ -1,0 +1,221 @@
+package Test;
+
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.sql.Array;
+import java.util.ArrayList;
+
+public class Test112_JSON2 {
+    //使用JsonReader解析复杂的JOSN数据
+    @Test
+    public void parseJSONMessage(){
+        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("Test/Test112_message.json");
+        InputStreamReader in = new InputStreamReader(is);
+        JsonReader jsonReader = new JsonReader(in);
+        ArrayList<Test112_Message> list = readMessageArray(jsonReader);
+        for (Test112_Message m : list){
+            System.out.println(m);
+        }
+    }
+    //用来读取message数组
+    private ArrayList<Test112_Message> readMessageArray(JsonReader jsonReader){
+        ArrayList<Test112_Message> list = new ArrayList<>();
+        try {
+            jsonReader.beginArray();
+            while (jsonReader.hasNext()){
+                list.add(readMessage(jsonReader));
+            }
+            jsonReader.endArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    //解析一个message对象
+    private Test112_Message readMessage(JsonReader jsonReader) {
+        Test112_Message m = new Test112_Message();
+        try {
+            jsonReader.beginObject();
+            while (jsonReader.hasNext()){
+                String name = jsonReader.nextName();
+                if("id".equals(name)){
+                    m.setId(jsonReader.nextLong());
+                } else if ("text".equals(name)) {
+                    m.setText(jsonReader.nextString());
+                } else if ("geo".equals(name) && jsonReader.peek() != JsonToken.NULL) {//peek()拿来看一下有没有值
+                    m.setGeo(readGeo(jsonReader));
+                } else if ("user".equals(name)) {
+                    m.setUser(readerUser(jsonReader));
+                }else {
+                    //跳过解析下一个
+                    jsonReader.skipValue();
+                }
+            }
+            jsonReader.endObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return m;
+    }
+    //解析User对象
+    private Test112_User readerUser(JsonReader jsonReader) {
+        Test112_User user = new Test112_User();
+        try {
+            jsonReader.beginObject();
+            while (jsonReader.hasNext()){
+                String name = jsonReader.nextName();
+                if ("name".equals(name)){
+                    user.setName(jsonReader.nextString());
+                } else if ("follower_count".equals(name)) {
+                    user.setFollowers_count(jsonReader.nextInt());
+                }else{
+                    jsonReader.skipValue();
+                }
+            }
+            jsonReader.endObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    //解析Geo
+    private ArrayList<Double> readGeo(JsonReader jsonReader) {
+        ArrayList<Double> list = new ArrayList<>();
+        try {
+            jsonReader.beginArray();
+            while (jsonReader.hasNext()){
+                list.add(jsonReader.nextDouble());
+            }
+            jsonReader.endArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+
+}
+-------------------------------------------------------------------------
+package Test;
+
+import java.util.ArrayList;
+
+public class Test112_Message {
+    private Test112_User user;
+    private long id;
+    private String text;
+    private ArrayList<Double> geo;
+
+    @Override
+    public String toString() {
+        return "Test112_Message{" +
+                "user=" + user +
+                ", id=" + id +
+                ", text='" + text + '\'' +
+                ", geo=" + geo +
+                '}';
+    }
+
+    public Test112_User getUser() {
+        return user;
+    }
+
+    public void setUser(Test112_User user) {
+        this.user = user;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public ArrayList<Double> getGeo() {
+        return geo;
+    }
+
+    public void setGeo(ArrayList<Double> geo) {
+        this.geo = geo;
+    }
+
+    public Test112_Message(Test112_User user, long id, String text, ArrayList<Double> geo) {
+        this.user = user;
+        this.id = id;
+        this.text = text;
+        this.geo = geo;
+    }
+
+    public Test112_Message() {
+    }
+}
+--------------------------------------------------------------------
+[
+  {
+    "id": 912345678901,
+    "text": "How do I read a JSON stream in Java?",
+    "geo": null,
+    "user": {
+      "name": "json_newb",
+      "followers_count": 41
+    }
+  },
+  {
+    "id": 912345678902,
+    "text": "@json_newb just use JsonReader!",
+    "geo": [50.454722, -104.606667],
+    "user": {
+      "name": "jesse",
+      "followers_count": 2
+    }
+  }
+]
+-------------------------------------------------------------------
+package Test;
+
+public class Test112_User {
+    private String name;
+    private int followers_count;
+
+    @Override
+    public String toString() {
+        return "Test112_User{" +
+                "name='" + name + '\'' +
+                ", followers_count=" + followers_count +
+                '}';
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getFollowers_count() {
+        return followers_count;
+    }
+
+    public void setFollowers_count(int followers_count) {
+        this.followers_count = followers_count;
+    }
+}
+

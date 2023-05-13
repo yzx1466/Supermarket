@@ -1,0 +1,118 @@
+package Test;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import org.junit.Test;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Test113_JSON3 {
+
+    /**
+     * 把一组JSON对象转换成一个Java对象集合，或者把一个Java对象集合转换成JSON数组
+     */
+    @Test
+    public void gson2(){
+        Gson gson = new Gson();
+        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("Test/Test113_names.json");
+        InputStreamReader in = new InputStreamReader(is);
+
+        TypeToken<List<Test113_Name>> typeToken = new TypeToken<List<Test113_Name>>(){};
+        List<Test113_Name> list = gson.fromJson(in, typeToken.getType());
+        System.out.println(list);
+
+        String json = gson.toJson(list, typeToken.getType());
+        System.out.println(json);
+    }
+
+    @Test
+    public void gson1(){
+        Gson gson = new Gson();
+        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("Test/Test113_name.json");
+        InputStreamReader in = new InputStreamReader(is);
+        Test113_Name name = gson.fromJson(in, Test113_Name.class);
+        System.out.println(name);
+
+        String json = gson.toJson(name);
+        System.out.println(json);
+    }
+
+    @Test
+    public void createJOSN(){
+        List<Test113_Name> list = new ArrayList<>();
+        list.add(new Test113_Name("vince","ma","15814669566@163.com"));
+        list.add(new Test113_Name("jack","wangjack","2061529338@qq.com"));
+
+        JsonArray array = new JsonArray();
+        for (Test113_Name n : list){
+            JsonObject obj = new JsonObject();
+            obj.addProperty("firstName",n.getFirstName());
+            obj.addProperty("lastName",n.getLastName());
+            obj.addProperty("email",n.getEmail());
+            array.add(obj);
+        }
+        System.out.println(array.toString());
+    }
+}
+------------------------------------------------------------------
+package Test;
+
+public class Test113_Name {
+    private String firstName;
+    private String lastName;
+    private String email;
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Test113_Name{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
+    public Test113_Name(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
+
+    public Test113_Name() {
+    }
+}
+---------------------------------------------------------------------
+{"firstName":"Yang","lastName":"ma","email":"15814669566@163.com"}
+---------------------------------------------------------------------
+[
+  {"firstName":"Yang","lastName":"ma","email":"15814669566@163.com"},
+  {"firstName":"Demon","lastName":"jacks","email":"2061529338@qq.com"}
+]
