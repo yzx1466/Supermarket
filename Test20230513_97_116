@@ -1,0 +1,107 @@
+package Test;
+
+import org.junit.Test;
+
+public class Test116 {
+    @Test
+    public void testObserver(){
+        Test116_Message message = new Test116_Message();
+        Test116_Observer observer1 = new Test116_User("yang");
+        Test116_Observer observer2 = new Test116_User("tom");
+        Test116_Observer observer3 = new Test116_User("jack");
+        //注册观察者
+        message.registerObserver(observer1);
+        message.registerObserver(observer2);
+        message.registerObserver(observer3);
+
+        //发送消息
+        message.setMessage("你好,我好，大家好");
+
+        //如果其中一个用户不想收到信息
+        message.removeObserver(observer1);
+
+        message.setMessage("你好,我好，大家好,假的");
+    }
+}
+---------------------------------------------------------------------
+package Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 具体的被观察着
+ */
+public class Test116_Message implements Test116_MessageSubject{
+    //维护的观察者列表
+    private List<Test116_Observer> list = new ArrayList<>();
+
+    private String message;
+
+    public void setMessage(String message) {
+        this.message = message;
+        notifyObserver();
+    }
+
+    @Override
+    public void registerObserver(Test116_Observer o) {
+        list.add(o);
+    }
+
+    @Override
+    public void removeObserver(Test116_Observer o) {
+        list.remove(o);
+    }
+
+    @Override
+    public void notifyObserver() {
+        for(int i = 0;i<list.size();i++){
+            Test116_Observer observer = list.get(i);
+            observer.updata(message);
+        }
+    }
+}
+------------------------------------------------------------------------
+package Test;
+
+/**
+ * 被观察者接口
+ */
+public interface Test116_MessageSubject {
+    //注册观察者
+    public void registerObserver(Test116_Observer o);
+    //移除观察者
+    public void removeObserver(Test116_Observer o);
+    //通知所有观察者更新信息
+    public void notifyObserver();
+}
+------------------------------------------------------------------------
+package Test;
+
+/**
+ * 观察者接口
+ */
+public interface Test116_Observer {
+    //更新信息
+    public void updata(String message);
+}
+------------------------------------------------------------------------
+package Test;
+
+import java.sql.SQLOutput;
+
+/**
+ * 具体的观察者
+ */
+public class Test116_User implements Test116_Observer{
+    private String name;
+    public Test116_User(String name){
+        this.name = name;
+    }
+
+    @Override
+    public void updata(String message) {
+        System.out.println("["+name+"]收到消息："+message);
+    }
+}
+

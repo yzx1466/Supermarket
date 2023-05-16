@@ -1,0 +1,51 @@
+package Test;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+public class Test114_MyFram extends Frame implements ActionListener{
+    /**
+     * 创建一个窗体
+     * 初始化窗体的基本属性
+     */
+    public Test114_MyFram(){
+        this.setSize(300,500);
+        this.setTitle("杨子熙的GUI");
+        //创建一个按钮
+        Button button = new Button("点我有喜");
+        //给按钮添加单机事件
+        button.addActionListener(this);
+        //创建一个线性布局
+        FlowLayout flowLayout = new FlowLayout();
+        //把布局应用到窗体上
+        this.setLayout(flowLayout);
+
+        //利用适配器Adapter给窗体添加（指定接口类）关闭事件
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                System.exit(0);
+            }
+        });
+
+        //把按钮添加到窗体上
+        this.add(button);
+
+        this.setVisible(true);
+    }
+
+
+    public static void main(String[] args) {
+        new Test114_MyFram();
+    }
+    //单机事件处理方法
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        System.out.println("惊喜：没惊喜");
+    }
+}
+
